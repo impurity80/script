@@ -1,0 +1,73 @@
+go database
+sw tcfe7
+d-sys fe cr mn n c
+rej phase /all
+rest phases fcc bcc hcp
+l-sys
+constituent
+get
+
+go p-3
+s-c t=573.15,p=1e5,n=1,w(cr)=0.0001,w(mn)=0.00001,w(n)=0.0000001,w(c)=0.00001
+c-e
+l-e
+screen
+vwcs
+
+@?<Hit_return_to_continue>
+
+set-axis-var 1 w(c)
+0.00001
+0.001
+0.00001
+step
+sep
+
+
+
+post
+s-d-a x w(c)
+s-d-a y hm(fcc)
+list_data_table
+list.txt
+
+
+
+ent func
+t-c = t - 273.15;
+
+
+ent func
+hm1 = hm(bcc)-hm(fcc);
+
+ent func
+hm2 = hm(hcp)-hm(fcc);
+
+
+ent tab 
+hm_list
+w(c) hm(fcc) hm(bcc) hm(hcp) hm1 hm2 
+
+
+tabulate hm_list hm.txt
+
+
+ent func
+gm1 = gm(bcc)-gm(fcc);
+
+ent func
+gm2 = gm(hcp)-gm(fcc);
+
+ent tab 
+gm_list
+w(c) gm(fcc) gm(bcc) gm(hcp) gm1 gm2 
+
+
+tabulate gm_list gm.txt
+
+plot
+
+
+set-inter
+
+@?<Hit_return_to_continue>
