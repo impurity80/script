@@ -1,0 +1,61 @@
+
+go data
+sw tcfe7
+def-sys
+fe c
+l-sys
+const
+rej ph /all
+rest ph fcc bcc
+get 
+go p-3
+l-st
+
+s-c t=1000 p=101325 n=1 w(c)=0.003 
+c-e
+l-e
+
+
+@?<Hit_return_to_continue>
+
+advanced t-z
+fcc bcc
+
+
+@?<Hit_return_to_continue>
+
+s-a-v 1 w(c)
+0.0
+0.03
+0.00025
+
+s-a-v 2 none
+
+step t-z
+fcc
+bcc
+
+
+post
+s-lab
+b
+
+
+
+s-d-a x w(c)
+s-d-a y t-k
+
+plot
+
+list_data_table t0_K.txt
+
+ent fun t_celsius = t - 273.15;
+
+ent tab 
+y_list
+t_celsius t w(c)
+
+
+tabulate y_list t0.txt
+
+@?<Hit_return_to_continue>

@@ -1,0 +1,128 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for calculation of a single equilibrium according to Tutorial 2.
+The following contents will be covered:
+
+ - Opening a database and selecting elements and phases
+ - Entering a composition
+ - Calculating an equilibrium at a given temperature
+ - Interpretation of information displayed in the output, phase summary and phase details windows
+ - Using the 'Options' window to modify the display
+ - Phase status indicators
+ - Calculation states
+ 
+Database: mc_sample_fe.tdb
+Author: P. Warczok
+Creation date: 20.03.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 03.08.2015 (P. Warczok, Update for 6.00, content modified - graphite got fixed fraction instead of dormant)
+
+
+****************************************************************************************************
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+ 
+use-module core                                   $ select core module for kinetic simulation
+
+close-workspace f                                 $ close any open workspace without asking for save 
+
+new-workspace                                     $ creates a new workspace 
+
+$ Add some information about your Script
+@ echo n
+set-workspace-info This script reproduces all operations performed in Tutorial 2.
+set-workspace-info +I assumed it to be the first MatCalc script you are reading.
+set-workspace-info +Therefore, I tried to explain every new command which is given.
+set-workspace-info +Every line starting with "$" contains a comment to a command.
+set-workspace-info +More information on scripting is given in Tutorial 13.
+set-workspace-info +Do not be afraid of scripting - this is much easier as you may think!
+echo y
+
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop_run_script $ stop script
+endif
+
+$$************************************************************************************************** 
+                          DATABASES, CHEMICAL COMPOSITION, SELECTED PHASES
+**************************************************************************************************$$
+
+open-thermodyn-database mc_sample_fe2.tdb             $ Opens thermodynamic database mc_sample_fe.tdb
+$ Selects Fe and C as components of the system. VA (vacancies) is not necessary
+select-elements FE C VA 
+$ Selects the phases which will be used in the simulation
+select-phases LIQUID FCC_A1 BCC_A2 CEMENTITE GRAPHITE	
+$ Reads data for the selected phases and elements from the database
+read-thermodyn-database           
+set-reference-element FE                             $ Fe is set as a reference element
+enter-composition WP C=0,4                           $ Sets the content of C to 0.4 wt.% 			
+
+$$************************************************************************************************** 
+                                      EQUILIBRIUM CALCULATIONS
+**************************************************************************************************$$
+
+set-temperature-celsius 700                          $ Sets the system temperature to 700C
+$ Sets the start values - this should prevent from any troubles in the equilibrium calculation
+set-automatic-startvalues									
+calculate-equilibrium                                $ Performs the equilibrium calculation
+
+
+$------------------------ Calculation with the suspended graphite phase ---------------------------$
+$ Suspend graphite phase - more strictly, a [f]lag for the [s]uspended status is [s]et
+change-phase-status GRAPHITE F S S
+calculate-equilibrium
+
+
+$------------------------ Calculation with the suspended graphite phase ---------------------------$
+$ Activating graphite phase - a [f]lag for the [s]uspended status is [c]leared
+change-phase-status GRAPHITE F S C
+$ Fixing the phase fraction of graphite - a [f]lag for the [f]ixed phase fraction status is [s]et
+change-phase-status GRAPHITE F F S
+$ The value of [p]hase fraction of graphite is set to '0' (zero)
+change-phase-status GRAPHITE P 0
+
+calculate-equilibrium
+
+
+$ Calculation without the graphite phase (the data for graphite will be not read from the database)
+open-thermodyn-database mc_sample_fe2.tdb 
+select-elements FE C VA
+$ Graphite is not selected as a phase present in the system
+select-phases LIQUID FCC_A1 BCC_A2 CEMENTITE
+read-thermodyn-database
+
+set-reference-element FE                             $ Fe is set as a reference element
+enter-composition WP C=0,4                           $ Sets the content of C to 0.4 wt.% 			
+
+set-temperature-celsius 700                          $ Sets the system temperature to 700C
+$ Sets the start values - this should prevent from any troubles in the equilibrium calculation
+set-automatic-startvalues                               
+calculate-equilibrium                                $ Performs the equilibrium calculation
+
+
+$$************************************************************************************************** 
+                                         CALCULATION STATES
+**************************************************************************************************$$
+
+create-calc-state Equil@700                          $ Creates calculation state "Equil@700"
+
+$ Calculation state for 600C
+set-temperature-celsius 600                          $ Sets the system temperature to 600C
+calculate-equilibrium                                $ Performs the equilibrium calculation
+create-calc-state Equil@600                          $ Creates calculation state "Equil@600"
+
+
+$$************************************************************************************************** 
+                                         SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_2                            $ Saves workspace as "Tutorial_2.mcw"
+

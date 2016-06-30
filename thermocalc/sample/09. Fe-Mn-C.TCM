@@ -1,0 +1,47 @@
+
+go data
+sw flapw
+def-sys
+fe mn c 
+l-sys
+const
+rej ph /all
+rest ph fcc eps_carbide cementite
+get 
+go p-3
+l-st
+
+s-c t=723 p=101325 n=1 x(c)=0.05 x(mn)=0.01
+c-e
+l-e
+
+
+s-a-v 1 x(c)
+0.0
+1.0
+0.025
+s-a-v 2 x(mn)
+0.0
+1.0
+0.025
+map 
+
+post
+s-lab
+b
+
+s-t-s 2
+s-s-s
+x
+n
+0
+0.4
+s-s-s
+y
+n
+0
+0.3
+
+plot
+
+@?<Hit_return_to_continue>

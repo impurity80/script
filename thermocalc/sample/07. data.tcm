@@ -1,0 +1,27 @@
+go database
+sw tcfe6
+d-sys fe c mn si al
+rej phase /all
+rest phases fcc bcc
+l-sys
+constituent
+get
+
+list_database
+elements
+
+
+@?<Hit_return_to_continue>
+
+
+list_database
+phase
+
+@?<Hit_return_to_continue>
+
+
+list_database
+constit
+
+
+@?<Hit_return_to_continue>

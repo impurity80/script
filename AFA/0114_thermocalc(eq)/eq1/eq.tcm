@@ -1,0 +1,83 @@
+go data
+sw tcfe7
+def-sys fe c si mn al cr ni mo w nb
+l-sys
+const
+rej phase /all
+rest phase liquid fcc_a1 b2_vacancy M23C6 m7c3
+rest phase laves
+get 
+go p-3
+l-st
+
+
+s-c t=1473.15 p=101325 n=1 
+s-c w(c)=0.00082 w(si)=0.0016 w(mn)=0.002 w(al)=0.024
+s-c w(cr)=0.143 w(ni)=0.207 w(mo)=0.0245 w(w)=0.0001 w(nb)=0.0081
+c-e
+l-e
+
+
+@?<Hit_return_to_continue>
+
+s-a-v 1 t
+673
+1773
+15
+step
+normal
+
+
+@?<Hit_return_to_continue>
+
+post
+s-d-a x t-c
+s-d-a y np(*)
+
+list_data_table phase.txt
+
+set_label b
+plot
+
+@?<Hit_return_to_continue>
+
+s-d-a y x(b2_vacancy,*)
+
+list_data_table x(b2_vacancy).txt
+
+plot
+
+@?<Hit_return_to_continue>
+
+s-d-a y x(laves_phase_c14#2,*)
+
+list_data_table x(laves_phase_c14#2).txt
+
+plot
+
+@?<Hit_return_to_continue>
+
+s-d-a y x(fcc_a1#1,*)
+
+list_data_table x(fcc_a1#1).txt
+
+plot
+
+@?<Hit_return_to_continue>
+
+s-d-a y x(fcc_a1#2,*)
+
+list_data_table x(fcc_a1#2).txt
+
+plot
+
+@?<Hit_return_to_continue>
+
+s-d-a y x(m23c6,*)
+
+list_data_table x(m23c6).txt
+
+plot
+
+@?<Hit_return_to_continue>
+

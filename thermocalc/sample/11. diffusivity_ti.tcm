@@ -1,0 +1,27 @@
+go database
+sw tcfe6
+d-sys fe c ti
+rej phase /all
+rest phases bcc
+l-sys
+constituent
+get
+app mobfe1
+d-sys fe c ti
+l-sys
+constituent
+rej phase /all
+rest phases bcc
+get
+
+go p-3
+s-c t=973,p=1e5,n=1,w(c)=0.00048,w(ti)=0.002
+c-e
+l-e
+screen
+vwcs
+
+show_value dt(bcc_a2#1,ti)
+show_value dt(bcc_a2#1,c)
+
+@?<Hit_return_to_continue>

@@ -1,0 +1,244 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for effect of microstructure and conditions (Part 2) according to Tutorial 16.
+The following contents will be covered:
+
+ - Simultaneous precipitation of two phases
+ - Effect of dislocation density
+ - Effect of grain diameter
+ - Subgrains and elongation factors
+
+Database: mc_sample_fe.tdb
+Author: P. Warczok
+Creation date: 10.11.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 26.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core $ Use "core" module (MatCalc uses "core" module by default anyway) 
+
+read-workspace Tutorial_15 $ Load Workspace from Tutorial 15
+
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop-run-script $ stop script
+endif
+
+
+$$************************************************************************************************** 
+                           SIMULTANEOUS PRECIPITATION WITH M23C6
+**************************************************************************************************$$
+
+create-new-phase M23C6 P                        $ Creates M23C6 precipitate
+set-precipitation-parameter M23C6_P0 C 25       $ Initializes M23C6 precipitate with 25 classes
+set-precipitation-parameter M23C6_P0 D ferrite  $ Attaches M23C6 precipitate to ferrite domain
+set-precipitation-parameter M23C6_P0 N C O      $ Ortho-composition for the M23C6 precipitate nuclei
+$ [G]rain boundaries are nucleation sites for M23C6 precipitate
+set-precipitation-parameter M23C6_P0 N S G
+
+$ Equilibrium dislocation density for ferrite domain set to 1e12
+set-precipitation-parameter ferrite T D E 1e12
+
+set-gui-window-property 3 R                  $ All locked series are [r]emoved from GUI-window no.3
+set-gui-window-property . S S 1e-12          $ Default x-axis scale starts at 1e-12
+clear-calc-buffer                            $ Calculation buffer is cleared
+ 
+set-plot-option 1 S N B F$M23C6_P0 %s        $ Plotting fraction of M23C6 precipitate phase
+set-plot-option 1 A Y 1 T Phase fraction     $ y-axis title
+set-plot-option 2 S R 1                      $ [R]emoves series no.1 in plot #1
+set-plot-option 2 S N B X$BCC_A2$CR %s       $ Plotting Cr content in bcc phase
+set-plot-option 4 S N B NUM_PREC$M23C6_P0 %s $ Plotting the number of particles of M23C6 precipitate
+set-plot-option 5 S N B R_MEAN$M23C6_P0 %s   $ Plotting mean radius of M23C6 precipitates
+
+set-plot-option 1 S M 0 Cementite            $ Renaming series in plot #1: #0 --> "Cementite"
+$ Renaming series in plot #1: #1 --> "M<sub>23</sub>C<sub>6</sub>"
+set-plot-option 1 S M 1 M<sub>23</sub>C<sub>6</sub>
+set-plot-option 2 S M 0 Cementite            $ Renaming series in plot #2: #0 --> "Cementite"
+set-plot-option 2 S M 1 'Matrix (bcc_a2)'    $ Renaming series in plot #2: #1 --> "Matrix (bcc_a2)"
+$ Renaming series in plot #3: #0 --> "X<sub>BCC_A2,C</sub>"
+set-plot-option 3 S M 0 X<sub>BCC_A2,C</sub>
+set-plot-option 4 S M 0 Cementite            $ Renaming series in plot #4: #0 --> "Cementite"
+$ Renaming series in plot #4: #1 --> "M<sub>23</sub>C<sub>6</sub>"
+set-plot-option 4 S M 1 M<sub>23</sub>C<sub>6</sub>
+set-plot-option 5 S M 0 Cementite            $ Renaming series in plot #5: #0 --> "Cementite"
+$ Renaming series in plot #5: #1 --> "M<sub>23</sub>C<sub>6</sub>"
+set-plot-option 5 S M 1 M<sub>23</sub>C<sub>6</sub>
+
+set-simulation-parameter E 3,6e10            $ End time - 3.6e10 seconds
+set-simulation-parameter T I 600             $ Isothermal treatment at 600
+set-simulation-parameter P Y                 $ Temperature in Celsius
+start-precipitate-simulation 
+
+
+$$************************************************************************************************** 
+                                 EFFECT OF DISLOCATION DENSITY
+**************************************************************************************************$$
+
+$ Renaming series in plot #1: #0 --> "Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 1 S M 0 'Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #1: #1 --> "M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 1 S M 1 'M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #2: #0 --> "Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 2 S M 0 'Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #2: #1 --> "Matrix (bcc_a2), 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 2 S M 1 'Matrix (bcc_a2), 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #3: #0 --> "X<sub>BCC_A2,C</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 3 S M 0 'X<sub>BCC_A2,C</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #4: #0 --> "Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 4 S M 0 'Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #4: #1 --> "M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 4 S M 1 'M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #5: #0 --> "Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 5 S M 0 'Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #5: #1 --> "M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 5 S M 1 'M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+
+set-gui-window-property . L       $ Locking all unlocked series
+$ Renaming series in plot #1: #2 --> "Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 1 S M 2 'Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #1: #3 --> "M<sub>23</sub>C<sub>6</sub>, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 1 S M 3 'M<sub>23</sub>C<sub>6</sub>, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #2: #2 --> "Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 2 S M 2 'Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #2: #3 --> "Matrix (bcc_a2), 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 2 S M 3 'Matrix (bcc_a2), 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #3: #1 --> "X<sub>BCC_A2,C</sub>, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 3 S M 1 'X<sub>BCC_A2,C</sub>, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #4: #2 --> "Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 4 S M 2 'Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #4: #3 --> "M<sub>23</sub>C<sub>6</sub>, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 4 S M 3 'M<sub>23</sub>C<sub>6</sub>, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #5: #2 --> "Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 5 S M 2 'Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+$ Renaming series in plot #5: #3 --> "M<sub>23</sub>C<sub>6</sub>, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 5 S M 3 'M<sub>23</sub>C<sub>6</sub>, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m'
+
+$ Dislocation density in ferrite domain set to 1e14
+set-precipitation-parameter ferrite T D E 1e14
+start-precipitate-simulation
+
+
+$$************************************************************************************************** 
+                                    EFFECT OF GRAIN DIAMETER
+**************************************************************************************************$$
+
+$ Renaming series in plot #1: #2 --> "Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 1 S M 2 'Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m'
+$ Renaming series in plot #1: #3 --> "M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m"
+set-plot-option 1 S M 3 'M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m'
+$ Renaming series in plot #2: #2 --> "Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 2 S M 2 'Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m'
+$ Renaming series in plot #2: #3 --> "Matrix (bcc_a2), 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m"
+set-plot-option 2 S M 3 'Matrix (bcc_a2), 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m'
+$ Renaming series in plot #3: #1 --> "X<sub>BCC_A2,C</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m"
+set-plot-option 3 S M 1 'X<sub>BCC_A2,C</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m'
+$ Renaming series in plot #4: #2 --> "Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 4 S M 2 'Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m'
+$ Renaming series in plot #4: #3 --> "M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m"
+set-plot-option 4 S M 3 'M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m'
+$ Renaming series in plot #5: #2 --> "Cementite, 10<sup>14</sup>m<sup>-2</sup>, 10<sup>-4</sup> m"
+set-plot-option 5 S M 2 'Cementite, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m'
+$ Renaming series in plot #5: #3 --> "M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m"
+set-plot-option 5 S M 3 'M<sub>23</sub>C<sub>6</sub>, 10<sup>12</sup>m<sup>-2</sup>, 10<sup>-5</sup> m'
+
+$ Dislocation density in ferrite domain set to 1e12
+set-precipitation-parameter ferrite T D E 1e12
+$ In S[t]ructure, [g]rain size section, the grain diameter is set to 10e-6
+set-precipitation-parameter ferrite T G 10e-6 
+start-precipitate-simulation 
+
+
+$$************************************************************************************************** 
+                                 SUBGRAINS AND ELONGATION FACTORS
+**************************************************************************************************$$
+
+$------------------------------------------- Subgrains --------------------------------------------$
+set-gui-window-property . R         $ All locked series are [r]emoved from the current GUI-window[.]
+$ Renaming series in plot #1: #0 --> "Cementite, g.b.(10<sup>-5</sup>m)m"
+set-plot-option 1 S M 0 'Cementite, g.b.(10<sup>-5</sup>m)'
+$ Renaming series in plot #1: #1 --> "M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)"
+set-plot-option 1 S M 1 'M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)'
+$ Renaming series in plot #2: #0 --> "Cementite, g.b.(10<sup>-5</sup>m)m"
+set-plot-option 2 S M 0 'Cementite, g.b.(10<sup>-5</sup>m)'
+$ Renaming series in plot #2: #1 --> "Matrix (bcc_a2), g.b.(10<sup>-5</sup>m)"
+set-plot-option 2 S M 1 'Matrix (bcc_a2), g.b.(10<sup>-5</sup>m)'
+$ Renaming series in plot #3: #0 --> "X<sub>BCC_A2,C</sub>, g.b.(10<sup>-5</sup>m)"
+set-plot-option 3 S M 0 'X<sub>BCC_A2,C</sub>, g.b.(10<sup>-5</sup>m)'
+$ Renaming series in plot #4: #0 --> "Cementite, g.b.(10<sup>-5</sup>m)m"
+set-plot-option 4 S M 0 'Cementite, g.b.(10<sup>-5</sup>m)'
+$ Renaming series in plot #4: #1 --> "M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)"
+set-plot-option 4 S M 1 'M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)'
+$ Renaming series in plot #5: #0 --> "Cementite, g.b.(10<sup>-5</sup>m)m"
+set-plot-option 5 S M 0 'Cementite, g.b.(10<sup>-5</sup>m)'
+$ Renaming series in plot #5: #1 --> "M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)"
+set-plot-option 5 S M 1 'M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)'
+
+set-gui-window-property . L         $ Locking all unlocked series
+$ Renaming series in plot #1: #2 --> "Cementite, g.b.(10<sup>-5</sup>m)+sg.b."
+set-plot-option 1 S M 2 'Cementite, g.b.(10<sup>-5</sup>m)+sg.b.'
+$ Renaming series in plot #1: #3 --> "M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+sg.b."
+set-plot-option 1 S M 3 'M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+sg.b.'
+$ Renaming series in plot #2: #2 --> "Cementite, g.b.(10<sup>-5</sup>m)+sg.b."
+set-plot-option 2 S M 2 'Cementite, g.b.(10<sup>-5</sup>m)+sg.b.'
+$ Renaming series in plot #2: #3 --> "Matrix (bcc_a2), g.b.(10<sup>-5</sup>m)+sg.b."
+set-plot-option 2 S M 3 'Matrix (bcc_a2), g.b.(10<sup>-5</sup>m)+sg.b.'
+$ Renaming series in plot #3: #1 --> "X<sub>BCC_A2,C</sub>, g.b.(10<sup>-5</sup>m)+sg.b."
+set-plot-option 3 S M 1 'X<sub>BCC_A2,C</sub>, g.b.(10<sup>-5</sup>m)+sg.b.'
+$ Renaming series in plot #4: #2 --> "Cementite, g.b.(10<sup>-5</sup>m)+sg.b."
+set-plot-option 4 S M 2 'Cementite, g.b.(10<sup>-5</sup>m)+sg.b.'
+$ Renaming series in plot #4: #3 --> "M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+sg.b."
+set-plot-option 4 S M 3 'M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+sg.b.'
+$ Renaming series in plot #5: #2 --> "Cementite, g.b.(10<sup>-5</sup>m)+sg.b."
+set-plot-option 5 S M 2 'Cementite, g.b.(10<sup>-5</sup>m)+sg.b.'
+$ Renaming series in plot #5: #3 --> "M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+sg.b."
+set-plot-option 5 S M 3 'M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+sg.b.'
+
+$ [G]rain and [s]ubgrain boundaries are nucleation sites for M23C6 precipitate
+set-precipitation-parameter M23C6_P0 N S GS
+start-precipitate-simulation 
+
+
+$--------------------------------------- Elongation factors ---------------------------------------$
+set-gui-window-property . L 
+$ Renaming series in plot #1: #4 --> "Cementite, g.b.(10<sup>-5</sup>m)+elong.sg.b."
+set-plot-option 1 S M 4 'Cementite, g.b.(10<sup>-5</sup>m)+elong.sg.b.'
+$ Renaming series in plot #1: #5 --> "M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+elong.sg.b."
+set-plot-option 1 S M 5 'M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+elong.sg.b.'
+$ Renaming series in plot #2: #4 --> "Cementite, g.b.(10<sup>-5</sup>m)+elong.sg.b."
+set-plot-option 2 S M 4 'Cementite, g.b.(10<sup>-5</sup>m)+elong.sg.b.'	
+$ Renaming series in plot #2: #5 --> "Matrix (bcc_a2), g.b.(10<sup>-5</sup>m)+elong.sg.b."
+set-plot-option 2 S M 5 'Matrix (bcc_a2), g.b.(10<sup>-5</sup>m)+elong.sg.b.'
+$ Renaming series in plot #3: #2 --> "X<sub>BCC_A2,C</sub>, g.b.(10<sup>-5</sup>m)+elong.sg.b."
+set-plot-option 3 S M 2 'X<sub>BCC_A2,C</sub>, g.b.(10<sup>-5</sup>m)+elong.sg.b.'
+$ Renaming series in plot #4: #4 --> "Cementite, g.b.(10<sup>-5</sup>m)+elong.sg.b."
+set-plot-option 4 S M 4 'Cementite, g.b.(10<sup>-5</sup>m)+elong.sg.b.'
+$ Renaming series in plot #4: #5 --> "M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+elong.sg.b."
+set-plot-option 4 S M 5 'M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+elong.sg.b.'
+set-plot-option 4 A Y 1 Y lin         $ Linear scale on y-axis
+$ Renaming series in plot #5: #4 --> "Cementite, g.b.(10<sup>-5</sup>m)+elong.sg.b."
+set-plot-option 5 S M 4 'Cementite, g.b.(10<sup>-5</sup>m)+elong.sg.b.'
+$ Renaming series in plot #5: #5 --> "M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+elong.sg.b."
+set-plot-option 5 S M 5 'M<sub>23</sub>C<sub>6</sub>, g.b.(10<sup>-5</sup>m)+elong.sg.b.'
+
+$ Grain size e[l]ongation factor for ferrite domain is set to 10
+set-precipitation-parameter ferrite T L 10
+start-precipitate-simulation 
+
+
+$$************************************************************************************************** 
+                                        SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_16

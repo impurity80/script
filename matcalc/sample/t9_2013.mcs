@@ -1,0 +1,622 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for calculating pseudobinary phase diagrams according to Tutorial 9.
+The following contents will be covered:
+
+ - Further phase boundary calculations
+ - Coping with complex boundary shapes
+ - Diagrams with different reference elements
+
+A pseudobinary phase diagram is an equilibrium diagram calculated for a ternary or higher-order 
+system, in which the phase boundaries resulting from the variation of two of the element contents 
+are calculated, while the amounts of all the other elements are kept constant.
+
+Database: mc_sample_fe.tdb
+Author: P. Warczok
+Creation date: 10.11.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 23.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core $ Use "core" module (MatCalc uses "core" module by default anyway) 
+
+new-workspace $ creates a new workspace 
+
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop-run-script $ stop script
+endif
+
+
+$$**************************************************************************************************
+                        DATABASES, CHEMICAL COMPOSITION, SELECTED PHASES
+**************************************************************************************************$$
+
+$open-thermodyn-database mc_fe_v2.000_prebeta_017.tdb                $ Thermodynamic database: mc_sample_fe.tdb 
+open-thermodyn-database mc_sample_fe2.tdb 
+select-elements FE C NB VA                              $ Components: Fe, Nb, C
+select-phases LIQUID FCC_A1 BCC_A2 CEMENTITE            $ Phases: Liquid, fcc, bcc, cementite
+read-thermodyn-database
+
+set-reference-element FE
+enter-composition WP C=0,1 NB=0,3                       $ Composition: 0.1 wt.% C, 0.3 wt.% Nb
+
+set-temperature-celsius 1000                            $ Temperature 1000C
+set-automatic-startvalues 
+calculate-equilibrium                                   $ Initial equilibrium
+
+new-gui-window p1                                       $ Phase diagram plots
+
+
+$$************************************************************************************************** 
+                          FE-C PSEUDOBINARY WITH CONSTANT NB CONTENT
+**************************************************************************************************$$
+
+$------------------------------ Upper boundary of delta-ferrite -----------------------------------$
+set-temperature-celsius 1550                $ Temperature 1550C
+calculate-equilibrium
+search-phase-boundary T BCC_A2              $ Varying temperature for the phase boundary search		
+
+set-step-option Y P                         $ "Phase boundary" type
+set-step-option P BCC_A2                    $ Phase boundary of bcc phase field
+set-step-option E C                         $ Carbon content varied
+set-step-option R 0 0,2 L 0.0005            $ Range 0 - 0.2; linear step of 0,0005
+set-step-option O E Y                       $ Composition in wt.%
+set-step-option O C Y                       $ Temperature in Celsius
+set-step-option X 20                        $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-plot-option . S N B T$C %s              $ Plotting the phase boundary
+set-gui-window-property . L                 $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C bcc_high_1   $ Renaming series: "*_T$C" --> "bcc_high_1"
+set-plot-option . G M X Y                   $ Switching on the major gridlines for x-axis
+set-plot-option . G M Y Y                   $ Switching on the major gridlines for y-axis
+
+
+$-------------------------------- Lower boundary of liquid ----------------------------------------$
+set-temperature-celsius 1450                $ Temperature 1450C
+calculate-equilibrium
+search-phase-boundary T LIQUID              $ Varying temperature for the phase boundary search
+
+set-step-option Y P                         $ "Phase boundary" type
+set-step-option P LIQUID                    $ Phase boundary of liquid phase field
+set-step-option E C                         $ Carbon content varied
+set-step-option R 0 0,2 L 0.0005            $ Range 0 - 0,2; linear step of 0,0005
+set-step-option O E Y                       $ Composition in wt.%
+set-step-option O C Y                       $ Temperature in Celsius
+set-step-option X 20                        $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                 $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C liquid       $ Renaming series: "*_T$C" --> "liquid"
+
+
+$------------------------------- Upper boundary of austenite --------------------------------------$
+set-temperature-celsius 1500                $ Temperature 1500C
+calculate-equilibrium
+search-phase-boundary T FCC_A1              $ Varying temperature for the phase boundary search
+
+set-step-option Y P                         $ "Phase boundary" type
+set-step-option P FCC_A1                    $ Phase boundary of fcc phase field
+set-step-option E C                         $ Carbon content varied
+set-step-option R 0 0,2 L 0.0005            $ Range 0 - 0,2; linear step of 0,0005
+set-step-option O E Y                       $ Composition in wt.%
+set-step-option O C Y                       $ Temperature in Celsius
+set-step-option X 20                        $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                 $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C fcc_1        $ Renaming series: "*_T$C" --> "fcc_1"
+
+
+$------------------------------ Lower boundary of delta-ferrite -----------------------------------$
+set-temperature-celsius 1450                $ Temperature 1450C
+calculate-equilibrium
+search-phase-boundary T BCC_A2              $ Varying temperature for the phase boundary search
+
+set-step-option Y P                         $ "Phase boundary" type
+set-step-option P BCC_A2                    $ Phase boundary of bcc phase field
+set-step-option E C                         $ Carbon content varied
+set-step-option R 0 0,2 L 0.0005            $ Range 0 - 0,2; linear step of 0,0005
+set-step-option O E Y                       $ Composition in wt.%
+set-step-option O C Y                       $ Temperature in Celsius
+set-step-option X 20                        $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                 $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C bcc_high_2   $ Renaming series: "*_T$C" --> "bcc_high_2"
+
+
+$---------------------------------- Boundary of NbC phase -----------------------------------------$
+set-temperature-celsius 1450                $ Temperature 1450C
+calculate-equilibrium
+search-phase-boundary T FCC_A1#01           $ Varying temperature for the phase boundary search
+
+set-step-option Y P                         $ "Phase boundary" type
+set-step-option P FCC_A1#01                 $ Phase boundary of NbC phase field
+set-step-option E C                         $ Carbon content varied
+set-step-option R 0 0,2 L 0.0005            $ Range 0 - 0,2; linear step of 0,0005
+set-step-option O E Y                       $ Composition in wt.%
+set-step-option O C Y                       $ Temperature in Celsius
+set-step-option X 100                       $ Setting the ma(x). T-step to 100
+step-equilibrium
+
+set-gui-window-property . L                 $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C NbC          $ Renaming series: "*_T$C" --> "NbC"
+set-plot-option . A Y 1 S 500..             $ Scaling on the y-axis starts from 500
+
+
+$------------------------------ Upper boundary of alpha-ferrite -----------------------------------$
+set-temperature-celsius 900                 $ Temperature 900C
+calculate-equilibrium
+search-phase-boundary T BCC_A2              $ Varying temperature for the phase boundary search
+
+set-step-option Y P                         $ "Phase boundary" type
+set-step-option P BCC_A2                    $ Phase boundary of bcc phase field
+set-step-option E C                         $ Carbon content varied
+set-step-option R 0 0,2 L 0.0005            $ Range 0 - 0,2; linear step of 0,0005
+set-step-option O E Y                       $ Composition in wt.%
+set-step-option O C Y                       $ Temperature in Celsius
+set-step-option X 20                        $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                 $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C bcc_low      $ Renaming series: "*_T$C" --> "bcc_low"
+
+
+$-------------------------------- Lower boundary of austenite -------------------------------------$
+set-temperature-celsius 700                 $ Temperature 700C
+calculate-equilibrium
+search-phase-boundary T FCC_A1              $ Varying temperature for the phase boundary search
+
+set-step-option Y P                         $ "Phase boundary" type
+set-step-option P FCC_A1                    $ Phase boundary of fcc phase field
+set-step-option E C                         $ Carbon content varied
+set-step-option R 0 0,2 L 0.0005            $ Range 0 - 0,2; linear step of 0,0005
+set-step-option O E Y                       $ Composition in wt.%
+set-step-option O C Y                       $ Temperature in Celsius
+set-step-option X 20                        $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                 $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C fcc2         $ Renaming series: "*_T$C" --> "fcc2"
+
+
+$------------------------------- Cementite upper phase boundary -----------------------------------$
+set-temperature-celsius 800                 $ Temperature 800C
+calculate-equilibrium
+search-phase-boundary T CEMENTITE           $ Varying temperature for the phase boundary search
+
+set-step-option Y P                         $ "Phase boundary" type
+set-step-option P CEMENTITE                 $ Phase boundary of cementite phase field
+set-step-option E C                         $ Carbon content varied
+set-step-option R 0 0,2 L 0.0005            $ Range 0 - 0,2; linear step of 0,0005
+set-step-option O E Y                       $ Composition in wt.%
+set-step-option O C Y                       $ Temperature in Celsius
+set-step-option X 20                        $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-plot-option . S L -1 T$C Y              $ Locking the last series
+set-plot-option . S M -1 *_T$C cementite    $ Renaming series: "*_T$C" --> "cementite"
+
+
+$----------------------------------- The finished diagram -----------------------------------------$
+set-plot-option . T Fe-C pseudobinary for 0.3 wt.% Nb        $ Plot title
+set-plot-option . A X 1 T Carbon content [wt.%]              $ x-axis title 
+set-plot-option . A Y 1 T Temperature [C]                    $ y-axis title
+set-plot-option . L R                                        $ Legend on the right
+
+
+$$************************************************************************************************** 
+                            FE-NB PSEUDOBINARY WITH CONSTANT C CONTENT
+**************************************************************************************************$$
+
+new-gui-window p1            $ The new phase diagram will be plotted in the new GUI-window
+
+
+$------------------------------- Upper boundary of delta-ferrite ----------------------------------$
+set-temperature-celsius 1550                   $ Temperature 1550C
+calculate-equilibrium
+search-phase-boundary T BCC_A2                 $ Varying temperature for the phase boundary search		
+
+set-step-option Y P                            $ "Phase boundary" type
+set-step-option P BCC_A2                       $ Phase boundary of bcc phase field
+set-step-option E NB                           $ Niobium content varied
+set-step-option R 0 1 L 0.01                   $ Range 0 - 1; linear step of 0,01
+set-step-option O E Y                          $ Composition in wt.%
+set-step-option O C Y                          $ Temperature in Celsius
+set-step-option X 20                           $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-plot-option . S N B T$C %s                 $ Plotting the phase boundary
+set-gui-window-property . L                    $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C bcc_high_1      $ Renaming series: "*_T$C" --> "bcc_high_1"
+set-plot-option . G M X Y                      $ Switching on the major gridlines for x-axis
+set-plot-option . G M Y Y                      $ Switching on the major gridlines for y-axis
+
+
+$---------------------------------- Lower boundary of liquid --------------------------------------$
+set-temperature-celsius 1450                   $ Temperature 1450C
+calculate-equilibrium
+search-phase-boundary T LIQUID                 $ Varying temperature for the phase boundary search
+
+set-step-option Y P                            $ "Phase boundary" type
+set-step-option P LIQUID                       $ Phase boundary of liquid phase field
+set-step-option E NB                           $ Niobium content varied
+set-step-option R 0 1 L 0.01                   $ Range 0 - 1; linear step of 0,01
+set-step-option O E Y                          $ Composition in wt.%
+set-step-option O C Y                          $ Temperature in Celsius
+set-step-option X 20                           $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                    $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C liquid          $ Renaming series: "*_T$C" --> "liquid"
+
+
+$---------------------------------- Upper boundary of austenite -----------------------------------$
+set-temperature-celsius 1500                   $ Temperature 1500C
+calculate-equilibrium
+search-phase-boundary T FCC_A1                 $ Varying temperature for the phase boundary search
+
+set-step-option Y P                            $ "Phase boundary" type
+set-step-option P FCC_A1                       $ Phase boundary of fcc phase field
+set-step-option E NB                           $ Niobium content varied
+set-step-option R 0 1 L 0.01                   $ Range 0 - 1; linear step of 0,01
+set-step-option O E Y                          $ Composition in wt.%
+set-step-option O C Y                          $ Temperature in Celsius
+set-step-option X 20                           $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                    $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C fcc_1           $ Renaming series: "*_T$C" --> "fcc_1"
+
+
+$--------------------------------- Lower boundary of delta-ferrite --------------------------------$
+set-temperature-celsius 1450                   $ Temperature 1450C
+calculate-equilibrium
+search-phase-boundary T BCC_A2                 $ Varying temperature for the phase boundary search
+
+set-step-option Y P                            $ "Phase boundary" type
+set-step-option P BCC_A2                       $ Phase boundary of bcc phase field
+set-step-option E NB                           $ Niobium content varied
+set-step-option R 0 1 L 0.01                   $ Range 0 - 1; linear step of 0,01
+set-step-option O E Y                          $ Composition in wt.%
+set-step-option O C Y                          $ Temperature in Celsius
+set-step-option X 20                           $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                    $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C bcc_high_2      $ Renaming series: "*_T$C" --> "bcc_high_2"
+
+
+$--------------------------------- Upper boundary of alpha-ferrite --------------------------------$
+set-temperature-celsius 900                    $ Temperature 900C
+calculate-equilibrium
+search-phase-boundary T BCC_A2                 $ Varying temperature for the phase boundary search
+
+set-step-option Y P                            $ "Phase boundary" type
+set-step-option P BCC_A2                       $ Phase boundary of bcc phase field
+set-step-option E NB                           $ Niobium content varied
+set-step-option R 0 1 L 0.01                   $ Range 0 - 1; linear step of 0,01
+set-step-option O E Y                          $ Composition in wt.%
+set-step-option O C Y                          $ Temperature in Celsius
+set-step-option X 20                           $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                    $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C bcc_low         $ Renaming series: "*_T$C" --> "bcc_low"
+
+
+$----------------------------------- Lower boundary of austenite ----------------------------------$
+set-temperature-celsius 700                    $ Temperature 700C
+calculate-equilibrium
+search-phase-boundary T FCC_A1                 $ Varying temperature for the phase boundary search
+
+set-step-option Y P                            $ "Phase boundary" type
+set-step-option P FCC_A1                       $ Phase boundary of fcc phase field
+set-step-option E NB                           $ Niobium content varied
+set-step-option R 0 1 L 0.01                   $ Range 0 - 1; linear step of 0,01
+set-step-option O E Y                          $ Composition in wt.%
+set-step-option O C Y                          $ Temperature in Celsius
+set-step-option X 20                           $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                    $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C fcc2            $ Renaming series: "*_T$C" --> "fcc2"
+
+
+$---------------------------------- Cementite upper phase boundary --------------------------------$
+set-temperature-celsius 800                    $ Temperature 800C
+calculate-equilibrium
+search-phase-boundary T CEMENTITE              $ Varying temperature for the phase boundary search
+
+set-step-option Y P                            $ "Phase boundary" type
+set-step-option P CEMENTITE                    $ Phase boundary of cementite phase field
+set-step-option E NB                           $ Niobium content varied
+set-step-option R 0 1 L 0.01                   $ Range 0 - 1; linear step of 0,01
+set-step-option O E Y                          $ Composition in wt.%
+set-step-option O C Y                          $ Temperature in Celsius
+set-step-option X 200                          $ Setting the ma(x). T-step to 200
+step-equilibrium
+
+set-gui-window-property . L                    $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C cementite       $ Renaming series: "*_T$C" --> "cementite"
+
+
+$------------------------------------ Boundary of NbC phase (1) -----------------------------------$
+set-temperature-celsius 1000                    $ Temperature 1000C
+calculate-equilibrium
+search-phase-boundary T FCC_A1#01 NB 750 Y     $ Varying temperature for the phase boundary search
+
+set-step-option Y P                            $ "Phase boundary" type
+set-step-option P FCC_A1#01                    $ Phase boundary of NbC phase field
+set-step-option E NB                           $ Niobium content varied
+set-step-option R 0 1 L 0.001                   $ Range 0 - 1; linear step of 0,001
+set-step-option O E Y                          $ Composition in wt.%
+set-step-option O C Y                          $ Temperature in Celsius
+set-step-option X 2                           $ Setting the ma(x). T-step to 2
+step-equilibrium
+
+set-gui-window-property . L                    $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C NbC_1           $ Renaming series: "*_T$C" --> "NbC_1"
+
+
+$------------------------------------ Boundary of NbC phase (2) -----------------------------------$
+set-temperature-celsius 500                    $ Temperature 500C
+calculate-equilibrium
+
+$ Searching a phase boundary of NbC phase field varying Nb content at 500C
+search-phase-boundary E FCC_A1#01 NB 500 Y
+
+set-step-option Y P                            $ "Phase boundary" type
+set-step-option P FCC_A1#01                    $ Phase boundary of NbC phase field
+set-step-option E NB                           $ Niobium content varied
+set-step-option R 0 1 L 0.001                  $ Range 0 - 1; linear step of 0,001
+set-step-option O E Y                          $ Composition in wt.%
+set-step-option O C Y                          $ Temperature in Celsius
+set-step-option X 200                          $ Setting the ma(x). T-step to 200
+step-equilibrium
+
+set-plot-option . S L -1 T$C Y                 $ Locking the last series
+set-plot-option . S M -1 *_T$C NbC_2           $ Renaming series: "*_T$C" --> "NbC_2"
+
+
+$-------------------------------------- The finished diagram --------------------------------------$
+
+set-plot-option . T Fe-Nb pseudobinary for 0.1 wt.% C       $ Plot title
+set-plot-option . A X 1 T Nb content [wt.%]                 $ x-axis title 
+set-plot-option . A Y 1 T Temperature [C]                   $ y-axis title
+set-plot-option . A Y 1 S 500..                             $ Scaling on the y-axis starts from 500
+set-plot-option . L R                                       $ Legend on the right
+
+
+$$************************************************************************************************** 
+                             NB-C PSEUDOBINARY WITH CONSTANT FE CONTENT
+**************************************************************************************************$$
+
+new-gui-window p1             $ This new phase diagram will be also plotted in the new GUI-window
+
+set-reference-element NB      $ Niobium content will be varied (Iron content will be kept fix)
+$ Initial system composition in mole fractions: 0,996 Fe, 0,003 C
+enter-composition X FE=0,996 C=0,003
+
+
+$---------------------------------- Upper boundary of delta-ferrite -------------------------------$
+set-temperature-celsius 1550                 $ Temperature 1550C
+calculate-equilibrium
+search-phase-boundary T BCC_A2               $ Varying temperature for the phase boundary search		
+
+set-step-option Y P                          $ "Phase boundary" type
+set-step-option P BCC_A2                     $ Phase boundary of bcc phase field
+set-step-option E C                          $ Carbon content varied
+set-step-option R 0 0,004 L 1e-5             $ Range 0 - 0.005; linear step of 0.00001
+set-step-option O E N                        $ Composition in mole fraction
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option X 20                         $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-plot-option . S N B T$C %s               $ Plotting the phase boundary
+set-gui-window-property . L                  $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C bcc_high_1    $ Renaming series: "*_T$C" --> "bcc_high_1"
+set-plot-option . G M X Y                    $ Switching on the major gridlines for x-axis
+set-plot-option . G M Y Y                    $ Switching on the major gridlines for y-axis
+
+
+$------------------------------------ Lower boundary of liquid ------------------------------------$
+set-temperature-celsius 1450                 $ Temperature 1450C
+calculate-equilibrium
+search-phase-boundary T LIQUID               $ Varying temperature for the phase boundary search
+
+set-step-option Y P                          $ "Phase boundary" type
+set-step-option P LIQUID                     $ Phase boundary of liquid phase field
+set-step-option E C                          $ Carbon content varied
+set-step-option R 0 0,004 L 1e-5             $ Range 0 - 0.005; linear step of 0.00001
+set-step-option O E N                        $ Composition in mole fraction
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option X 20                         $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                  $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C liquid        $ Renaming series: "*_T$C" --> "liquid"
+
+
+$---------------------------------- Upper boundary of austenite -----------------------------------$
+set-temperature-celsius 1500                 $ Temperature 1500C
+calculate-equilibrium
+search-phase-boundary T FCC_A1               $ Varying temperature for the phase boundary search
+
+set-step-option Y P                          $ "Phase boundary" type
+set-step-option P FCC_A1                     $ Phase boundary of fcc phase field
+set-step-option E C                          $ Carbon content varied
+set-step-option R 0 0,004 L 1e-5             $ Range 0 - 0.005; linear step of 0.00001
+set-step-option O E N                        $ Composition in mole fraction
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option X 20                         $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                  $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C fcc_1         $ Renaming series: "*_T$C" --> "fcc_1"
+
+
+$-------------------------------- Lower boundary of delta-ferrite ---------------------------------$
+set-temperature-celsius 1450                 $ Temperature 1450C
+calculate-equilibrium
+search-phase-boundary T BCC_A2               $ Varying temperature for the phase boundary search
+
+set-step-option Y P                          $ "Phase boundary" type
+set-step-option P BCC_A2                     $ Phase boundary of bcc phase field
+set-step-option E C                          $ Carbon content varied
+set-step-option R 0 0,004 L 1e-5             $ Range 0 - 0.005; linear step of 0.00001
+set-step-option O E N                        $ Composition in mole fraction
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option X 20                         $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                  $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C bcc_high_2    $ Renaming series: "*_T$C" --> "bcc_high_2"
+
+
+$-------------------------------- Upper boundary of alpha-ferrite ---------------------------------$
+set-temperature-celsius 900                  $ Temperature 900C
+calculate-equilibrium
+search-phase-boundary T BCC_A2               $ Varying temperature for the phase boundary search
+
+set-step-option Y P                          $ "Phase boundary" type
+set-step-option P BCC_A2                     $ Phase boundary of bcc phase field
+set-step-option E C                          $ Carbon content varied
+set-step-option R 0 0,00399 L 1e-5           $ Range 0 - 0.00498; linear step of 0.00001
+set-step-option O E N                        $ Composition in mole fraction
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option X 20                         $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                  $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C bcc_low       $ Renaming series: "*_T$C" --> "bcc_low"
+
+
+$---------------------------------- Lower boundary of austenite -----------------------------------$
+set-temperature-celsius 700                  $ Temperature 700C
+calculate-equilibrium
+search-phase-boundary T FCC_A1               $ Varying temperature for the phase boundary search
+
+set-step-option Y P                          $ "Phase boundary" type
+set-step-option P FCC_A1                     $ Phase boundary of fcc phase field
+set-step-option E C                          $ Carbon content varied
+set-step-option R 0 0,00399 L 1e-5           $ Range 0 - 0.00498; linear step of 0.00001
+set-step-option O E N                        $ Composition in mole fraction
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option X 20                         $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                  $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C fcc2          $ Renaming series: "*_T$C" --> "fcc2"
+
+
+$--------------------------------- Cementite upper phase boundary ---------------------------------$
+set-temperature-celsius 800                  $ Temperature 800C
+calculate-equilibrium
+search-phase-boundary T CEMENTITE            $ Varying temperature for the phase boundary search
+
+set-step-option Y P                          $ "Phase boundary" type
+set-step-option P CEMENTITE                  $ Phase boundary of cementite phase field
+set-step-option E C                          $ Carbon content varied
+set-step-option R 0 0,004 L 1e-5             $ Range 0 - 0.005; linear step of 0.00001
+set-step-option O E N                        $ Composition in mole fraction
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option X 20                         $ Setting the ma(x). T-step to 20
+step-equilibrium
+
+set-gui-window-property . L                  $ Locking all unlocked series
+set-plot-option . S M -1 *_T$C cementite     $ Renaming series: "*_T$C" --> "cementite"
+
+
+$------------------------------------ Boundary of NbC phase (1) ------------------------------------$
+set-temperature-celsius 1000                 $ Temperature 1000C
+calculate-equilibrium
+search-phase-boundary T FCC_A1#01            $ Varying temperature for the phase boundary search
+
+set-step-option Y P                          $ "Phase boundary" type
+set-step-option P FCC_A1#01                  $ Phase boundary of NbC phase field
+set-step-option E C                          $ Carbon content varied
+set-step-option R 0 0.00396 L 1e-5           $ Range 0 - 0,00396; linear step of 0,00001
+set-step-option O E N                        $ Composition in mole fraction
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option X 20                         $ Setting the ma(x). T-step to 200
+step-equilibrium
+
+set-plot-option . S L -1 T$C Y               $ Locking the last series
+set-plot-option . S M -1 *_T$C NbC           $ Renaming series: "*_T$C" --> "NbC"
+$$
+$------------------------------------ Boundary of NbC phase (2) ------------------------------------$
+
+enter-composition X FE=0,996 C=0,002
+
+set-temperature-celsius 1500                 $ Temperature 1500C
+calculate-equilibrium
+search-phase-boundary T FCC_A1#01            $ Varying temperature for the phase boundary search
+
+set-step-option Y P                          $ "Phase boundary" type
+set-step-option P FCC_A1#01                  $ Phase boundary of NbC phase field
+set-step-option E C                          $ Carbon content varied
+set-step-option R 0 0.0039 L 1e-5            $ Range 0 - 0,00498; linear step of 0,0005
+set-step-option O E N                        $ Composition in mole fraction
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option X 2                          $ Setting the ma(x). T-step to 200
+step-equilibrium
+
+set-gui-window-property . L                  $ Locking the last series
+set-plot-option . S M -1 *_T$C NbC_2         $ Renaming series: "*_T$C" --> "NbC"
+
+ 
+$------------------------------------ Boundary of NbC phase (3) ------------------------------------$
+
+
+enter-composition X FE=0,996 C=0,0022
+
+set-temperature-celsius 1425                 $ Temperature 1300C
+calculate-equilibrium
+$search-phase-boundary T FCC_A1#01            $ Varying temperature for the phase boundary search
+SEARCH_PHASE_BOUNDARY E FCC_A1#01 c 1425 Y
+
+set-step-option Y P                          $ "Phase boundary" type
+set-step-option P FCC_A1#01                  $ Phase boundary of NbC phase field
+set-step-option E C                          $ Carbon content varied
+set-step-option R 0.002 0.0039 L 1e-5             $ Range 0 - 0,00498; linear step of 0,0005
+set-step-option O E N                        $ Composition in mole fraction
+set-step-option O C Y                        $ Temperature in Celsius
+
+
+set-step-option X 20                         $ Setting the ma(x). T-step to 200
+step-equilibrium
+
+set-plot-option . S L -1 T$C Y               $ Locking the last series
+set-plot-option . S M -1 *_T$C NbC_3         $ Renaming series: "*_T$C" --> "NbC"
+$$
+
+$------------------------------------ The finished diagram ----------------------------------------$
+set-plot-option . T Nb-C pseudobinary for 0.995 Fe (mole fraction)     $ Plot title
+set-plot-option . A X 1 T C content [mole fr.]                         $ x-axis title 
+set-plot-option . A Y 1 T Temperature [C]                              $ y-axis title
+set-plot-option . A Y 1 S 500..                          $ Scaling on the y-axis starts from 500
+set-plot-option . L R                                                  $ Legend on the right
+
+
+$$************************************************************************************************** 
+                                        SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_9
+
+

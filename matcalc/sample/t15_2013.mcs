@@ -1,0 +1,278 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for effect of microstructure and conditions (Part 1) according to Tutorial 15.
+The following contents will be covered:
+
+ - Choice of nucleation model
+ - Diffusivity in precipitates
+ - Nucleation sites for the precipitate phase
+ - Microstructural parameters of the precipitation domain 
+
+The Fe-Cr-C system forms the basis of many industrially useful alloys. The aim of this and Tutorial 
+16 is to produce a simulation of the precipitation behaviour in a Fe-10Cr-0.1C (wt.%) alloy during 
+heat-treatment at 600C. This involves considering several aspects, such as the chemical 
+compositions of nuclei, the microstructural sites on which nuclei form, and the density of these 
+sites in the microstructure under consideration. This first of two tutorials will focus on modelling 
+the formation of the metastable cementite (Fe3C) phase, and Tutorial 16 will consider the 
+interaction between this and the more stable phase M23C6.
+
+Database: mc_sample_fe.tdb
+Author: P. Warczok
+Creation date: 10.11.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 26.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core $ Use "core" module (MatCalc uses "core" module by default anyway) 
+
+new-workspace $ creates a new workspace 
+
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+    send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+    stop-run-script $ stop script
+endif
+
+
+$$************************************************************************************************** 
+                       DATABASES, CHEMICAL COMPOSITION, SELECTED PHASES
+**************************************************************************************************$$
+
+open-thermodyn-database mc_sample_fe2.tdb              $ Thermodynamic database: mc_sample_fe2.tdb 
+select-elements FE C CR VA                            $ Components: Fe, C, Cr
+select-phases BCC_A2 CEMENTITE M23C6                  $ Phases: bcc, cementite, M23C6
+read-thermodyn-database
+
+set-reference-element FE
+enter-composition WP C=0,1 CR=10                       $ Composition: 0.1 wt.% C, 10 wt.% Cr
+
+
+set-temperature-celsius 600                           $ Temperature 600C
+set-automatic-startvalues
+calculate-equilibrium                                 $ Initial equilibrium
+
+change-phase-status M23C6 F S S                       $ M23C6 phase suspended
+calculate-equilibrium
+change-phase-status M23C6 F S C                       $ M23C6 phase activated
+calculate-equilibrium
+
+
+$$************************************************************************************************** 
+                                NUCLEATION MODEL FOR CEMENTITE
+**************************************************************************************************$$
+
+$-------------------------------- Setting up the simulation ---------------------------------------$
+create-new-phase CEMENTITE P                       $ Cementite is defined as a precipitate phase
+$ Initializes the precipitate phase cementite_p0 with 25 [c]lasses
+set-precipitation-parameter CEMENTITE_P0 C 25
+$ In the [n]ucleation section, the nucleation [s]ites are set to [d]islocations
+set-precipitation-parameter CEMENTITE_P0 N S D
+$ In the [n]ucleation section, the nucleus [c]omposition is set as [p]ara-composition
+set-precipitation-parameter CEMENTITE_P0 N C P
+
+create-precipitation-domain ferrite                $ Creates precipitation domain "ferrite"
+$ "Ferrite" is defined as a matri[x] phase with bcc structure
+set-precipitation-parameter ferrite X BCC_A2
+$ Attaches the precipitate phase cementite_p0 to "ferrite" [d]omain
+set-precipitation-parameter CEMENTITE_P0 D ferrite
+
+read-mobility-database mc_sample_fe.ddb            $ Mobility (diffusion) database: mc_sample_fe.ddb	
+
+
+$------------------------------- Graphical display of results -------------------------------------$
+new-gui-window p1
+set-gui-window-property . S U Y                    $ Use default x-axis
+set-gui-window-property . S T Time [h]             $ Default x-axis title
+set-gui-window-property . S Y log                  $ Logarithmic scale on default x-axis
+set-gui-window-property . S S 1e-10..              $ Scaling limit for the default x-axis
+set-gui-window-property . S F 1/3600               $ Multiplication factor for the default x-axis
+
+set-plot-option . S N B F$CEMENTITE_P0 %s          $ Plotting the fraction of cementite phase
+set-plot-option . A Y 1 T f<sub>CEM</sub>          $ y-axis title
+
+create-new-plot X .
+$ Plotting the chromium content in the cementite precipitate
+set-plot-option . S N B X$CEMENTITE_P0$CR %s
+$ Plotting the chromium content in the cementite precipitate nucleus
+set-plot-option . S N B X_NUCL$CEMENTITE_P0$CR %s
+set-plot-option . A Y 1 T x<sub>Cr</sub>           $ y-axis title
+
+create-new-plot X .
+set-plot-option . S N B X$BCC_A2$C %s              $ Plotting the carbon content in the bcc phase
+set-plot-option . A Y 1 T x<sub>BCC_A2, C</sub>    $ y-axis title
+
+create-new-plot X .
+$ Plotting the number of particles of cementite precipitate
+set-plot-option . S N B NUM_PREC$CEMENTITE_P0 %s
+$ y-axis title
+set-plot-option . A Y 1 T N<sub>ppt</sub> [m<sup>-3</sup>]
+
+create-new-plot X .
+set-plot-option . S N B R_MEAN$CEMENTITE_P0 %s     $ Plotting the mean radius of cementite precipitate
+set-plot-option . A Y 1 T R<sub>mean</sub> [m]     $ y-axis title
+set-plot-option . A Y 1 Y log                      $ Logarithmic scale on y-axis
+
+set-plot-option 1 G M X Y            $ Switching on the major gridlines for x-axis for plot no. 1
+set-plot-option 1 G M Y Y            $ Switching on the major gridlines for y-axis for plot no. 1
+set-plot-option 2 G M X Y            $ Switching on the major gridlines for x-axis for plot no. 2
+set-plot-option 2 G M Y Y            $ Switching on the major gridlines for y-axis for plot no. 2
+set-plot-option 3 G M X Y            $ Switching on the major gridlines for x-axis for plot no. 3
+set-plot-option 3 G M Y Y            $ Switching on the major gridlines for y-axis for plot no. 3
+set-plot-option 4 G M X Y            $ Switching on the major gridlines for x-axis for plot no. 4
+set-plot-option 4 G M Y Y            $ Switching on the major gridlines for y-axis for plot no. 4
+set-plot-option 5 G M X Y            $ Switching on the major gridlines for x-axis for plot no. 5
+set-plot-option 5 G M Y Y            $ Switching on the major gridlines for y-axis for plot no. 5
+$ Arranging plots in the columns with the [n]umber of columns of "2"
+set-gui-window-property . N 2
+
+save-workspace Tutorial_15_setup
+
+
+$$************************************************************************************************** 
+                                           CALCULATION
+**************************************************************************************************$$
+
+$-------------------------------------- Para-equilibrium ------------------------------------------$
+set-simulation-parameter E 3,6e13        $ Simulation end tim[e] is set to 3.6e13 seconds
+$ In [t]emperature section, [i]sothermal option is chosen with 600
+set-simulation-parameter T I 600
+set-simulation-parameter P Y             $ Tem[p]erature in Celsius
+start-precipitate-simulation             $ Starts kinetic simulation
+
+set-gui-window-property . L              $ Locking all unlocked series
+set-plot-option 1 S M 0 Para             $ Renaming series in plot #1: #0 --> "Para"
+$ Renaming series in plot #2: #0 --> "X<sub>CEM</sub>, Para"
+set-plot-option 2 S M 0 'X<sub>CEM</sub>, Para'
+$ Renaming series in plot #2: #1 --> "X<sub>NUCL,CEM</sub>, Para"
+set-plot-option 2 S M 1 'X<sub>NUCL,CEM</sub>, Para'
+set-plot-option 3 S M 0 Para             $ Renaming series in plot #3: #0 --> "Para"
+set-plot-option 4 S M 0 Para             $ Renaming series in plot #4: #0 --> "Para"
+set-plot-option 5 S M 0 Para             $ Renaming series in plot #5: #0 --> "Para"
+
+
+$-------------------------------------- Ortho-equilibrium -----------------------------------------$
+$ In the [n]ucleation section, the nucleus [c]omposition is set as [o]rtho-composition
+set-precipitation-parameter CEMENTITE_P0 N C O
+start-precipitate-simulation 
+
+set-plot-option 1 S M 1 Ortho            $ Renaming series in plot #1: #1 --> "Ortho"
+$ Renaming series in plot #2: #2 --> "X<sub>CEM</sub>, Ortho"
+set-plot-option 2 S M 2 'X<sub>CEM</sub>, Ortho'
+$ Renaming series in plot #2: #3 --> "X<sub>NUCL,CEM</sub>, Ortho"
+set-plot-option 2 S M 3 'X<sub>NUCL,CEM</sub>, Ortho'
+set-plot-option 3 S M 1 Ortho            $ Renaming series in plot #3: #1 --> "Ortho"
+set-plot-option 4 S M 1 Ortho            $ Renaming series in plot #4: #1 --> "Ortho"
+set-plot-option 5 S M 1 Ortho            $ Renaming series in plot #5: #1 --> "Ortho"
+
+
+$$************************************************************************************************** 
+                                   DIFFUSIVITY IN PRECIPITATES
+**************************************************************************************************$$
+
+set-gui-window-property . L              $ Locking all unlocked series
+$ Renaming series in plot #1: #2 --> "Para, faster diffusion in ppt"
+set-plot-option 1 S M 2 'Para, faster diffusion in ppt'
+$ Renaming series in plot #2: #4 --> "X<sub>CEM</sub>, Para, faster diffusion in ppt"
+set-plot-option 2 S M 4 'X<sub>CEM</sub>, Para, faster diffusion in ppt'
+$ Renaming series in plot #2: #5 --> "X<sub>NUCL,CEM</sub>, Para, faster diffusion in ppt"
+set-plot-option 2 S M 5 'X<sub>NUCL,CEM</sub>, Para, faster diffusion in ppt'
+$ Renaming series in plot #3: #2 --> "Para, faster diffusion in ppt"
+set-plot-option 3 S M 2 'Para, faster diffusion in ppt'
+$ Renaming series in plot #4: #2 --> "Para, faster diffusion in ppt"
+set-plot-option 4 S M 2 'Para, faster diffusion in ppt'
+$ Renaming series in plot #5: #2 --> "Para, faster diffusion in ppt"
+set-plot-option 5 S M 2 'Para, faster diffusion in ppt'
+
+$ Para-composition for cementite precipitate nucleus 
+set-precipitation-parameter CEMENTITE_P0 N C P
+$ [S]pecial options, [d]iffusion in prec. is calculated from matrix diffusion with [r]atio of 0.25
+set-precipitation-parameter CEMENTITE_P0 S D R 0,25
+start-precipitate-simulation 
+
+
+$$************************************************************************************************** 
+                          MICROSTRUCTURAL PARAMETERS AND NUCLEATION SITES
+**************************************************************************************************$$
+
+set-plot-option 1 S R -1 Ortho               $ Removing "Ortho" series in plot #1
+$ Removing "X<sub>CEM</sub>, Ortho" series in plot #2
+set-plot-option 2 S R -1 'X<sub>CEM</sub>, Ortho'
+$ Removing "X<sub>NUCL,CEM</sub>, Ortho" series in plot #2
+set-plot-option 2 S R -1 'X<sub>NUCL,CEM</sub>, Ortho'
+set-plot-option 3 S R -1 Ortho               $ Removing "Ortho" series in plot #3
+set-plot-option 4 S R -1 Ortho               $ Removing "Ortho" series in plot #4
+set-plot-option 5 S R -1 Ortho               $ Removing "Ortho" series in plot #5
+ 
+$ Renaming series in plot #1: #0 --> "10<sup>-12</sup>m<sup>2</sup>"
+set-plot-option 1 S M 0 10<sup>-12</sup>m<sup>2</sup>
+$ Renaming series in plot #2: #0 --> "10<sup>-12</sup>m<sup>2</sup>"
+set-plot-option 2 S M 0 10<sup>-12</sup>m<sup>2</sup>
+$ Renaming series in plot #2: #1 --> "nucl_10<sup>-12</sup>m<sup>2</sup>"
+set-plot-option 2 S M 1 nucl_10<sup>-12</sup>m<sup>2</sup>
+$ Renaming series in plot #3: #0 --> "10<sup>-12</sup>m<sup>2</sup>"
+set-plot-option 3 S M 0 10<sup>-12</sup>m<sup>2</sup>
+$ Renaming series in plot #4: #0 --> "10<sup>-12</sup>m<sup>2</sup>"
+set-plot-option 4 S M 0 10<sup>-12</sup>m<sup>2</sup>
+$ Renaming series in plot #5: #0 --> "10<sup>-12</sup>m<sup>2</sup>"
+set-plot-option 5 S M 0 10<sup>-12</sup>m<sup>2</sup>
+
+
+$---------------------------------- Dislocation density 1e14 --------------------------------------$
+$ Renaming series in plot #1: #1 --> "10<sup>-14</sup>m<sup>2</sup>"
+set-plot-option 1 S M 1 10<sup>-14</sup>m<sup>2</sup>
+$ Renaming series in plot #2: #2 --> "10<sup>-14</sup>m<sup>2</sup>"
+set-plot-option 2 S M 2 10<sup>-14</sup>m<sup>2</sup>
+$ Renaming series in plot #2: #3 --> "nucl_10<sup>-14</sup>m<sup>2</sup>"
+set-plot-option 2 S M 3 nucl_10<sup>-14</sup>m<sup>2</sup>
+$ Renaming series in plot #3: #1 --> "10<sup>-14</sup>m<sup>2</sup>"
+set-plot-option 3 S M 1 10<sup>-14</sup>m<sup>2</sup>
+$ Renaming series in plot #4: #1 --> "10<sup>-14</sup>m<sup>2</sup>"
+set-plot-option 4 S M 1 10<sup>-14</sup>m<sup>2</sup>
+$ Renaming series in plot #5: #1 --> "10<sup>-14</sup>m<sup>2</sup>"
+set-plot-option 5 S M 1 10<sup>-14</sup>m<sup>2</sup>
+
+$ [S]pecial options, [d]iffusion in prec. is calculated from matrix diffusion with [r]atio of 0.01
+set-precipitation-parameter CEMENTITE_P0 S D R 0,01
+$ In S[t]ructure, [d]islocations, [e]quilibrium dislocation density in ferrite domain set to 1e14
+set-precipitation-parameter ferrite T D E 1e14 
+start-precipitate-simulation 
+
+set-gui-window-property . L
+
+
+$---------------------------------- Dislocation density 1e16 --------------------------------------$
+$ Renaming series in plot #1: #2 --> "10<sup>-16</sup>m<sup>2</sup>"
+set-plot-option 1 S M 2 10<sup>-16</sup>m<sup>2</sup>
+$ Renaming series in plot #2: #4 --> "10<sup>-16</sup>m<sup>2</sup>"
+set-plot-option 2 S M 4 10<sup>-16</sup>m<sup>2</sup>
+$ Renaming series in plot #2: #5 --> "10<sup>-16</sup>m<sup>2</sup>"
+set-plot-option 2 S M 5 nucl_10<sup>-16</sup>m<sup>2</sup>
+$ Renaming series in plot #3: #2 --> "10<sup>-16</sup>m<sup>2</sup>"
+set-plot-option 3 S M 2 10<sup>-16</sup>m<sup>2</sup>
+$ Renaming series in plot #4: #2 --> "10<sup>-16</sup>m<sup>2</sup>"
+set-plot-option 4 S M 2 10<sup>-16</sup>m<sup>2</sup>
+set-plot-option 4 A Y 1 Y log                 $ Logarithmic scale on y-axis
+$ Renaming series in plot #5: #2 --> "10<sup>-16</sup>m<sup>2</sup>"
+set-plot-option 5 S M 2 10<sup>-16</sup>m<sup>2</sup>
+
+$ In S[t]ructure, [d]islocations, [e]quilibrium dislocation density in ferrite domain set to 1e16
+set-precipitation-parameter ferrite T D E 1e16 
+start-precipitate-simulation 
+
+
+$$************************************************************************************************** 
+                                       SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_15

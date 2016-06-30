@@ -1,0 +1,207 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for plotting a TTP diagram according to Tutorial 18.
+The following contents will be covered:
+
+ - Calculating a TTP diagram for isothermal treatments
+ - Calculating a TTP diagram for continuous cooling
+ - Plotting the diagram
+ - Display options: absolute, relative or relative to maximum phase fraction
+
+A time-temperature-precipitation diagram is a plot consisting of contours characterising the extent 
+of a precipitation reaction on axes of temperature versus time. In this tutorial, a TTP diagram 
+will be calculated for the precipitation of NbC in the austenite single-phase region.
+
+Database: mc_sample_fe.tdb
+Author: P. Warczok
+Creation date: 10.11.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 26.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core $ Use "core" module (MatCalc uses "core" module by default anyway) 
+
+new-workspace $ creates a new workspace 
+
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop-run-script $ stop script
+endif
+
+
+$$************************************************************************************************** 
+                        DATABASES, CHEMICAL COMPOSITION, SELECTED PHASES
+**************************************************************************************************$$
+
+open-thermodyn-database mc_sample_fe.tdb             $ Thermodynamic database: mc_sample_fe.tdb 
+select-elements FE C NB VA                           $ Components: Fe, C, Nb
+select-phases BCC_A2 FCC_A1                          $ Phases: bcc, fcc
+read-thermodyn-database 
+
+set-reference-element FE
+enter-composition WP C=0,1 NB=0,7                    $ Composition: 0.1 wt.% C, 0.7 wt.% Nb
+
+set-temperature-celsius 1000                         $ Temperature 1000C
+set-automatic-startvalues 
+calculate-equilibrium 
+search-phase-boundary T BCC_A2             $ Varying temperature for the bcc phase boundary search
+
+set-temperature-celsius 1200               $ Temperature 1000C
+calculate-equilibrium 
+search-phase-boundary T BCC_A2             $ Varying temperature for the bcc phase boundary search
+
+
+$$************************************************************************************************** 
+                                       SETTING UP PLOTS
+**************************************************************************************************$$
+
+new-gui-window p1
+set-gui-window-property . X T$C                  $ Temperature in Celsius set as variable on x-axis			
+set-plot-option . A X 1 T Temperature [C]                    $ x-axis title
+set-plot-option . A Y 1 T Equilibrium phase fraction of NbC  $ y-axis title
+set-plot-option . L N                                        $ No legend
+set-plot-option . S N B F$FCC_A1#01 %s                       $ Plotting the fraction of NbC phase
+
+set-step-option Y T                       $ "Temperature" type
+set-step-option R 1420 920 L 10           $ Range 920 - 1420; linear step of 10
+set-step-option O C Y                     $ Temperature in Celsius
+step-equilibrium 
+
+set-plot-option 1 S L * Y                 $ Lock all Series in Plot 1
+set-gui-window-property . X stepvalue
+
+create-precipitation-domain austenite
+set-precipitation-parameter austenite X FCC_A1
+
+create-new-phase FCC_A1#01 P 
+set-precipitation-parameter FCC_A1#01_P0 C 25
+set-precipitation-parameter FCC_A1#01_P0 D austenite
+set-precipitation-parameter FCC_A1#01_P0 N S D
+
+read-mobility-database mc_sample_fe.ddb
+
+
+$$************************************************************************************************** 
+                                     PRECIPITATION CALCULATION
+**************************************************************************************************$$
+
+set-simulation-parameter E 1e5
+set-simulation-parameter T I 925
+start-precipitate-simulation
+
+create-new-plot X .
+set-plot-option . A X 1 T Time [s]
+set-plot-option . A X 1 Y log
+set-plot-option . A X 1 S 1..
+set-plot-option . A Y 1 T NbC phase fraction
+set-plot-option . L R
+set-plot-option . S N B F$FCC_A1#01_P0 %s
+set-gui-window-property . L
+set-plot-option . S M -1 *_F$FCC_A1#01_P0 925C
+
+set-simulation-parameter U 2 
+set-simulation-parameter E 1e5
+set-simulation-parameter T I 1025
+start-precipitate-simulation
+set-gui-window-property . L
+set-plot-option . S M -1 *_F$FCC_A1#01_P0 1025C
+
+set-simulation-parameter E 1e5
+set-simulation-parameter T I 1125
+start-precipitate-simulation
+set-gui-window-property . L
+set-plot-option . S M -1 *_F$FCC_A1#01_P0 1125C
+
+set-simulation-parameter U 2
+set-simulation-parameter E 1e5
+set-simulation-parameter T I 1175
+start-precipitate-simulation
+set-gui-window-property . L
+set-plot-option . S M -1 *_F$FCC_A1#01_P0 1175C
+
+set-simulation-parameter U 5
+set-simulation-parameter E 1e5
+set-simulation-parameter T I 1225
+start-precipitate-simulation 
+set-plot-option . S L -1 F$FCC_A1#01_P0 Y
+set-plot-option . S M -1 *_F$FCC_A1#01_P0 1225C
+
+
+$$************************************************************************************************** 
+                                   PLOTTING THE TTP DIAGRAMS
+**************************************************************************************************$$
+
+set-ttp-parameter E 1e5
+set-ttp-parameter T 1225 
+set-ttp-parameter O 925
+set-ttp-parameter D 25 
+set-ttp-parameter N 0.1
+start-ttp-simulation 
+
+new-gui-window p6
+set-plot-option . P R R
+set-plot-option . S N D FCC_A1#01_P0 0.05
+set-plot-option . S N D FCC_A1#01_P0 0.5
+set-plot-option . S N D FCC_A1#01_P0 0.95
+set-plot-option . S M 0 0.05
+set-plot-option . S M 1 0.5
+set-plot-option . S M 2 0.95
+set-plot-option . A X 1 T Time [s]
+set-plot-option . A Y 1 T Temperature [C]
+
+set-plot-option . P R A
+set-plot-option . S R *
+set-plot-option . S N D FCC_A1#01_P0 1e-3
+set-plot-option . S N D FCC_A1#01_P0 2e-3
+set-plot-option . S N D FCC_A1#01_P0 3e-3
+set-plot-option . S N D FCC_A1#01_P0 4e-3
+set-plot-option . S N D FCC_A1#01_P0 5e-3
+set-plot-option . S N D FCC_A1#01_P0 6e-3
+set-plot-option . S N D FCC_A1#01_P0 7e-3
+set-plot-option . S M 0 1e-3
+set-plot-option . S M 1 2e-3
+set-plot-option . S M 2 3e-3
+set-plot-option . S M 3 4e-3
+set-plot-option . S M 4 5e-3
+set-plot-option . S M 5 6e-3
+set-plot-option . S M 6 7e-3
+
+set-plot-option . P R M
+set-plot-option . S R *
+set-plot-option . S N D FCC_A1#01_P0 0,1
+set-plot-option . S N D FCC_A1#01_P0 0,2
+set-plot-option . S N D FCC_A1#01_P0 0,3
+set-plot-option . S N D FCC_A1#01_P0 0,4
+set-plot-option . S N D FCC_A1#01_P0 0,5
+set-plot-option . S N D FCC_A1#01_P0 0,6
+set-plot-option . S N D FCC_A1#01_P0 0,7
+set-plot-option . S N D FCC_A1#01_P0 0,8
+set-plot-option . S N D FCC_A1#01_P0 0,9
+set-plot-option . S M 0 0.1
+set-plot-option . S M 1 0.2
+set-plot-option . S M 2 0.3
+set-plot-option . S M 3 0.4
+set-plot-option . S M 4 0.5
+set-plot-option . S M 5 0.6
+set-plot-option . S M 6 0.7
+set-plot-option . S M 7 0.8
+set-plot-option . S M 8 0.9
+
+
+$$************************************************************************************************** 
+                                        SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_18

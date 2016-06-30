@@ -1,0 +1,107 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for stepped equilibrium calculations according to Tutorial 3.
+The following contents will be covered:
+
+ - Re-opening a saved file and loading a calculation state
+ - Calculating a stepped equilibrium with varying temperature
+ - Understanding the results in the Output window
+ - Working with multiple buffers
+ - Calculating a stepped equilibrium with varying composition
+ - The Edit buffer states window
+
+Database: mc_sample_fe2.tdb
+Author: P. Warczok
+Creation date: 20.03.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 22.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core                   $ Use "core" module (MatCalc uses "core" module by default anyway)
+
+read-workspace Tutorial_2         $ Loads the workspace "Tutorial_2.mcw"
+
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop_run_script $ stop script
+endif
+
+
+$$**************************************************************************************************
+                                 STEPPED EQUILIBRIUM CALCULATIONS
+**************************************************************************************************$$
+
+$------------------ Stepped equilibrium calculation with varying of temperature -------------------$
+$ Select the calculation state "Equil@600" (this state is already selected by default)
+select-calc-state Equil@600
+load-calc-state                             $ Loads the data from the selected calculation state
+
+set-step-option Y T                         $ Selects the t[y]pe of calculation: "[T]emperature"
+$ Defines the [r]ange of the calculation: from 1600 to 400 with [l]inear step of 25
+set-step-option R 1600 400 L 25
+$ Sets the temperature unit to "C" - [O]ption "Temperature in [C]elsius" is set to [y]es
+set-step-option O C Y
+
+step-equilibrium                            $ Performs stepped equilibrium calculation
+
+rename-current-buffer T=400_to_1600C        $ Renames the current buffer to "T=400_to_1600C"
+create-calc-buffer C=0_to_1.5_at_500C       $ Creates a new buffer "C=0_to_1.5_at_500C"
+
+
+$------------- Stepped equilibrium calculation with varying carbon content - part I ---------------$
+set-step-option Y E                         $ Selects the t[y]pe of calculation: "[E]lement content"
+$ Defines the [r]ange of the calculation: from 0 to 1.5 with linear step of 0.05
+set-step-option R 0 1.5 L 0.05
+set-step-option O C Y                       $ The temperature unit is "C", again. 
+set-step-option T 500                       $ Sets [t]emperature of the calculation to 500
+$ Global composition is varied - [O]ption "vary [p]ara-equilibrium constraints" is set to [n]o
+set-step-option O P N 
+$ Composition range is expressed in wt% - [O]ption "[e]lement content in wt%" is set to [y]es
+set-step-option O E Y
+
+step-equilibrium                            $ Performs stepped equilibrium calculation
+
+
+$------------- Stepped equilibrium calculation with varying carbon content - part II --------------$
+create-calc-buffer C=0_to_1.5_at_800C       $ Creating new buffer "C=0_to_1.5_at_800C"
+
+set-step-option Y E                         $ Selects the t[y]pe of calculation: "[E]lement content"
+$ Defines the [r]ange of the calculation: from 0 to 1.5 with linear step of 0.05
+set-step-option R 0 1.5 L 0.05
+set-step-option O C Y                       $ Temperature unit "C" 
+set-step-option T 800                       $ Setting the temperature to 800
+$ Global composition is varied - [O]ption "vary [p]ara-equilibrium constraints" is set to [n]o
+set-step-option O P N
+$ Composition range is expressed in wt% - [O]ption "[e]lement content in wt%" is set to [y]es
+set-step-option O E Y
+
+step-equilibrium                            $ Performs stepped equilibrium calculation
+
+
+$$************************************************************************************************** 
+                                   OPERATION ON BUFFER STATES
+**************************************************************************************************$$
+
+select-calc-buffer C=0_to_1.5_at_500C        $ Selects the buffer state to edit
+list-buffer-contents                         $ Lists the contents of the selected buffer
+load-buffer-state 8                          $ Load the buffer state no.8
+
+
+$$************************************************************************************************** 
+                                        SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_3                    $ Saves workspace as "Tutorial_3.mcw"
+

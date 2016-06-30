@@ -1,0 +1,123 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for introduction to scripting (1: Equilibrium calculations) according to Tutorial 13.
+The following contents will be covered:
+
+ - Purpose of scripts
+ - Writing a script to perform a stepped calculation and display the results
+
+A script is a text file, containing a list of commands to be executed in order from top to bottom. 
+They are particularly useful to speed up routine or repetitive operations. Once a script file has 
+been created, it can easily be modified to serve a new purpose, for example by changing the elements 
+or phases in the system. Script files, consisting only of text, are also much smaller in size than 
+MatCalc workspace files, especially those resulting from precipitation calculations.
+Individual scripts can also be grouped into master-scripts; this facilitates, for example, 
+calculations involving multi-stage heat treatments. Some sample scripts are provided with MatCalc.
+You will find them in the subdirectories of 'MatCalc/scripts/script_menu/templates'. Of course,
+you can also edit them in MatCalc by clicking on 'Open template…' in 'Script' menu.
+
+Database: mc_sample_fe.tdb
+Author: P. Warczok
+Creation date: 10.11.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 26.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core $ Use "core" module (MatCalc uses "core" module by default anyway) 
+
+new-workspace   $ creates a new workspace 
+
+@ echo n        $ Hides command name in console     
+set-workspace-info Script T13
+set-workspace-info +Calculation of equilibrium phase stability
+set-workspace-info +in Fe-0.4C wt.% system
+set-workspace-info +with phases LIQUID, BCC_A2, FCC_A1 and CEMENTITE.
+echo y          $ Shows command name in console
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop-run-script $ stop script
+endif
+
+
+$$************************************************************************************************** 
+                         DATABASES, CHEMICAL COMPOSITION, SELECTED PHASES
+**************************************************************************************************$$
+
+open-thermodyn-database mc_sample_fe.tdb              $ Thermodynamic database: mc_sample_fe.tdb 
+select-elements c fe                                  $ Components: Fe, Nb, C
+select-phases liq bcc fcc cem                         $ Phases: Liquid, bcc, fcc, cementite
+read-thermodyn-database
+
+set-reference-element FE
+enter-composition wp c=0.4                            $ Composition: 0.4 wt.% C
+ 
+set-temperature-celsius 700                           $ Temperature 700C
+set-automatic-startvalues
+calculate-equilibrium                                 $ Initial equilibrium
+
+
+$$************************************************************************************************** 
+                                        GRAPHICAL OUTPUT
+**************************************************************************************************$$
+
+set-step-option r 400 1600 L 25
+step-equilibrium
+
+new-gui-window p1 
+
+set-gui-window-property . x t$c
+set-gui-window-property . s u y                       $ set default x-axis to be used for all plots
+set-gui-window-property . s t Temperature [C]         $ title for default x-axis
+
+set-plot-option . t Phase stability in Fe-0.4 wt.% C
+
+set-plot-option . a y 1 t Phase fraction [%]
+set-plot-option . a y 1 f 100
+set-plot-option . a y 1 y log                         $ changes axis type to log
+set-plot-option . a y 1 s 1..100                      $ modifies axis scaling
+
+set-plot-option . s n b f$liquid 
+set-plot-option . s m -1 f$liquid Liquid
+
+set-plot-option . s n b f$bcc_a2 
+set-plot-option . s m -1 f$bcc_a2 Ferrite
+set-plot-option . s n b f$fcc_a1 
+set-plot-option . s m -1 f$fcc_a1 Austenite 
+set-plot-option . s n b f$cementite
+set-plot-option . s m -1 f$cementite Fe<sub>3</sub>C
+
+move-gui-window . 20 20 800 1000
+update-gui-window .
+set-gui-window-property . y col_no_symb               $sets style-sheet to colour with no symbols.
+
+create-new-plot x .
+
+set_plot_option . t Composition of phases 
+set-plot-option . a y 1 t Carbon content [wt.%]       $ label on y-axis
+set-plot-option . s n b x$liquid$C $wp                 $ adding the first series...
+set-plot-option . s m -1 x$liquid$C Liquid            $... and changing its name.
+set-plot-option . s n b x$bcc_a2$C $wp
+set-plot-option . s m -1 x$bcc_a2$C Ferrite 
+set-plot-option . s n b x$fcc_a1$C $wp 
+set-plot-option . s m -1 x$fcc_a1$C Austenite 
+set-plot-option . s n b x$cementite$C $wp
+set-plot-option . s m -1 x$cementite$C Fe<sub>3</sub>C
+
+
+$$************************************************************************************************** 
+                                         SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_13

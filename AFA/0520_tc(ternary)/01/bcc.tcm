@@ -1,0 +1,76 @@
+
+go data
+sw TCFE7
+def-sys
+fe cr al ni nb mo c
+l-sys
+const
+rej ph /all
+rest ph fcc bcc 
+get 
+go p-3
+l-st
+
+s-c t=1473 p=101325 n=1 w(cr)=0.15 w(al)=0.02 w(ni)=0.20 
+s-c w(nb)=0.01 w(mo)=0.02 w(c)=0.001
+c-e
+l-e
+
+
+
+@?<Hit_return_to_continue>
+
+s-a-v 1 w(al)
+0
+0.08
+0.005
+s-a-v 2 w(cr)
+0
+0.25
+0.01
+map 
+
+post
+
+
+s-t-s 2
+s-s-s
+x
+n
+0
+0.08
+s-s-s
+y
+n
+0
+0.25
+
+add 0.005 0.05
+
+
+
+add 0.07 0.23
+
+
+
+add 0.005 0.23
+
+
+
+
+
+plot
+
+
+list_data_table list.txt
+
+ent tab
+y_list
+w(al) w(cr)
+
+
+tabulate y_list tab.txt
+
+@?<Hit_return_to_continue>
+
+set_inter

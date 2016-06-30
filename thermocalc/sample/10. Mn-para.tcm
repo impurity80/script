@@ -1,0 +1,47 @@
+go p-3
+def-mat
+FLAPW
+fe
+y
+mn 0.5
+c 0.3
+
+450
+NONE
+NONE
+y
+n
+l-e,,,,,
+advance para
+fcc
+cementite
+c
+
+s-a-v 1 w(mn) 0 0.2 0.001
+s-a-v 2 none
+step para
+fcc
+cementite
+c
+none
+
+post
+
+s-d-a x w(*,c)
+
+s-d-a y w(mn)
+s-t-s 2
+s-s-s
+x
+n
+0
+0.1
+s-s-s
+y
+n
+0
+0.2
+
+plot
+
+@?<Hit_return_to_continue>

@@ -1,0 +1,174 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for calculating phase boundaries according to Tutorial 7.
+The following contents will be covered:
+
+ - Using Search phase boundary with temperature variation to determine solidus and liquidus
+ - Determining austenite - ferrite transformation temperatures
+ - Finding phase boundaries for carbide phases in terms of temperature and element content
+ - Tracing a phase boundary on axes of temperature versus element content
+
+Database: mc_sample_fe.tdb
+Author: P. Warczok
+Creation date: 20.03.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 23.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core $ Use "core" module (MatCalc uses "core" module by default anyway) 
+
+new-workspace $ creates a new workspace 
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop_run_script $ stop script
+endif
+
+
+$$************************************************************************************************** 
+                         DATABASES, CHEMICAL COMPOSITION, SELECTED PHASES
+**************************************************************************************************$$
+
+open-thermodyn-database mc_sample_fe.tdb                  $ Thermodynamic database: mc_sample_fe.tdb 
+select-elements FE C NB VA                                $ Components: Fe, C, Nb
+select-phases LIQUID FCC_A1 BCC_A2 CEMENTITE              $ Phases: Liquid, fcc, bcc, cementite
+read-thermodyn-database
+
+set-reference-element FE
+enter-composition WP C=0,1 NB=0,3                         $ Composition: 0.1 wt.% C, 0.3 wt.% Nb
+
+set-temperature-celsius 1000 
+set-automatic-startvalues
+calculate-equilibrium                                     $ Initial equilibrium
+
+
+$$************************************************************************************************** 
+                                    CALCULATING PHASE BOUNDARIES
+**************************************************************************************************$$
+
+$-------------------------------- Solidus and liquidus temperature --------------------------------$
+$ Searching a phase boundary varying [t]emperature for the liquid phase field
+search-phase-boundary T LIQUID
+$ Searching a phase boundary varying [t]emperature for the bcc phase field
+search-phase-boundary T BCC_A2
+
+set-temperature-celsius 1600
+calculate-equilibrium
+search-phase-boundary T BCC_A2                             $ Finding liquidus
+
+
+$-------------------------- Austenite-ferrite transformation temperatures -------------------------$
+set-temperature-celsius 700
+calculate-equilibrium
+search-phase-boundary T FCC_A1                             $ Phase boundary of fcc phase field
+
+set-temperature-celsius 900
+calculate-equilibrium
+search-phase-boundary T BCC_A2                             $ Phase boundary of bcc phase field
+
+
+$------------------------------ Dissolution temperatures of carbides ------------------------------$
+set-temperature-celsius 800
+calculate-equilibrium
+search-phase-boundary T CEMENTITE                          $ Phase boundary of cementite phase field
+
+set-temperature-celsius 1200
+calculate-equilibrium
+search-phase-boundary T FCC_A1#01                          $ Phase boundary of NbC phase field
+
+
+$---------------------------- Element content for zero-phase fractions ----------------------------$
+set-temperature-celsius 700
+calculate-equilibrium
+$$ Searching a phase boundary varying [e]lement content for the cementite phase field. 
+ [C]arbon content will be varied at 700C ("Temperature in Celsius" is switched to [y]es) $$
+search-phase-boundary E CEMENTITE C 700 Y
+
+
+enter-composition WP C=0,1                                 $ Resets the carbon content
+set-temperature-celsius 1000
+calculate-equilibrium
+$$ Searching a phase boundary varying [e]lement content for the NbC phase field. 
+ [Nb] content will be varied at 1000C ("Temperature in Celsius" is switched to [y]es) $$
+search-phase-boundary E FCC_A1#01 NB 1000 Y
+
+
+$---------------------------------- Tracing phase boundaries --------------------------------------$
+enter-composition WP NB=0,3                  $ Resets the niobium content
+
+set-step-option Y P                          $ Selects the t[y]pe of calculation: "[P]hase boundary"
+set-step-option R 0,01 0,35 L 0,01            $ Range 0,01 - 0,6; linear step of 0,01
+set-step-option E NB                         $ Niobium content varied
+set-step-option P FCC_A1#01                  $ Phase boundary of NbC phase field
+set-step-option X 100                        $ Setting the ma(x). T-step to 100
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option O E Y                        $ Composition in wt.%
+step-equilibrium
+
+new-gui-window p1                            $ Creating plot
+$ Plotting the phase boundary (Temperature in C vs. Nb content)
+set-plot-option . S N B T$C %s
+$ For current plot [.], [s]eries section, [d]uplicate and lock is performed by name [-1] on "T$C"
+set-plot-option . S D -1 T$C
+set-plot-option . S M -1 *_T$C '0.1 wt.%C'   $ Renames the series "*_T$C" to "0.1 wt.%C"
+
+enter-composition WP C=0,05                  $ C content = 0,05 wt.%
+set-temperature-celsius 1000
+calculate-equilibrium
+$ Searching a phase boundary of NbC phase field varying Nb content at 1000C
+search-phase-boundary E FCC_A1#01 NB 1000 Y
+
+set-step-option Y P                          $ Selects the t[y]pe of calculation: "[P]hase boundary"
+set-step-option R 0,01 0,35 L 0,01            $ Range 0,01 - 0,6; linear step of 0,01
+set-step-option E NB                         $ Niobium content varied
+set-step-option P FCC_A1#01                  $ Phase boundary of NbC phase field
+set-step-option X 100                        $ Setting the ma(x). T-step to 100
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option O E Y                        $ Composition in wt.%
+step-equilibrium
+
+$ For current plot [.], [s]eries section, [d]uplicate and lock is performed by name [-1] on "T$C"
+set-plot-option . S D -1 T$C
+set-plot-option . S M -1 *_T$C '0.05 wt.%C'  $ Renames the series "*_T$C" to "0.05 wt.%C"
+
+enter-composition WP C=0,01                  $ C content = 0,01 wt.%
+set-temperature-celsius 1000
+calculate-equilibrium
+$ Searching a phase boundary of NbC phase field varying Nb content at 1000C
+search-phase-boundary E FCC_A1#01 NB 1000 Y
+
+set-step-option Y P                          $ "Phase boundary" type
+set-step-option R 0,01 0,35 L 0,01            $ Range 0,01 - 0,6; linear step of 0,01
+set-step-option E NB                         $ Niobium content varied
+set-step-option P FCC_A1#01                  $ Phase boundary of NbC phase field
+set-step-option X 100                        $ Setting the ma(x). T-step to 100
+set-step-option O C Y                        $ Temperature in Celsius
+set-step-option O E Y                        $ Composition in wt.%
+step-equilibrium
+
+$ For current plot [.], [s]eries section, [l]ock is performed by name [-1] on "T$C" ([y]es)
+set-plot-option . S L -1 T$C Y
+set-plot-option . S M -1 *_T$C '0.01 wt.%C'  $ Renames the series "*_T$C" to "0.01 wt.%C"
+
+set-plot-option . T Phase boundary of NbC    $ Plot title
+set-plot-option . A X 1 T Nb content [wt.%]  $ x-axis title
+set-plot-option . A Y 1 T Temperature [C]    $ y-axis title
+
+
+$$************************************************************************************************** 
+                                        SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_7
+

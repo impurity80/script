@@ -1,0 +1,30 @@
+go p-3
+def-mat
+TCFE6
+def-sys
+Fe
+Y
+Mn 1
+Al 1
+Si 1
+800
+*
+BCC FCC
+NONE
+
+
+Y
+N
+
+
+
+
+@?<Hit_return_to_continue>
+
+l-e
+
+
+show_value DGM(FCC)
+
+set_interac
+

@@ -1,0 +1,464 @@
+                                                                                
+        '*A. Fernandez Guillermet, Z fur Metallkde Vol 78 (1987), p 165-171     
+&       TRITA-MAC 261 (rev. 1985); C-FE-NI-W                                    
+&       + High Temp. Sci. Vol.22 (1986) p161-177, TRITA-MAC 262 (1985)'         
+        'A. Fernandez Guillermet, Int. J of Thermophys vol 8 (1987) p 481-510   
+&       TRITA-MAC 308 (1986); CO'                                               
+        'A. Fernandez Guillermet, P. Gustafson,                                 
+&       High Temp. High Press. vol 16, (1985) p 591-610,                        
+&       TRITA-MAC 229(1984); FE'                                                
+        'A. Fernandez Guillermet, CALPHAD Vol 6 (1982), p 127-140               
+&       (sigma phase revised 1986), TRITA-MAC 200 (1982); FE-MO'                
+        'A. Fernandez Guillermet and L. Ostlund                                 
+&       Met. Trans. 17A (1986) p 1809-23, TRITA-MAC 258 (1985); FE-NI-W'        
+        'A. Fernandez Guillermet, Int.J of Thermophys, Vol 6, (1985) p 367-393, 
+&       TRITA-MAC 238 (1984); MO'                                               
+        'A. F. Guillermet, High Temp High Press, Vol 19 (1987) p 119-160,       
+&       TRITA-MAC 271 (1985); Zr'                                               
+        'A. Fernandez Guillermet, High Temp. High Press. Vol 19(1988) p477-499, 
+&       TRITA-MAC 324 (1986); CO-FE'                                            
+        'A. Fernandez Guillermet, Z Metallkde, Vol 78 (1987) p 639-647          
+&       TRITA-MAC 324B (1986); CO-NI'                                           
+        'A. Fernandez Guillermet, Calphad 13, (1989) pp 1-22                    
+&       TRITA-MAC 337 (1987); Co-Fe-Ni'                                         
+        'A. Fernandez Guillermet and Goran Grimvall, J. Less-Common Met.        
+&       Vol.147(1989) p.195-211, TRITA-MAC 363 (1988); TC (TECHNETIUM)'         
+        'A. Fernandez Guillermet, Z. Metallkde. Vol 79(1988) p.524-536,         
+&       TRITA-MAC 362 (1988); C-CO-NI AND C-CO-FE-NI'                           
+        'A. Fernandez Guillermet, M. Hillert, B. Jansson, B. Sundman            
+&       Metall. Trans. B, (1981) vol 12B, pp 745-754; FE-S'                     
+        'A. Fernandez Guillermet, Z Metallkde Vol 78 (1987) p 700-709           
+&       TRITA-MAC 333 (1987); C-CO'                                             
+        'A. Fernandez Guillermet, Z. Metallkde. Vol 79 (1988) p.317-329;        
+&       TRITA-MAC 361(1987); C-Co-FE'                                           
+        'A. Fernandez Guillermet, Z. Metallkde. Vol 79(1988), p.633-642,        
+&       TRITA-MAC 372 (1988); Co-Fe-W'                                          
+        'A. Fernandez Guillermet, TRITA-MAC 373(1988), Co-Ni-W'                 
+        'A. Fernandez Guillermet, Metall. Trans. Vol 20A (1989) p.935-956,      
+&       TRITA-MAC 371 (1988); C-CO-W'                                           
+        'A. Fernandez Guillermet, Z. Metallkde. Vol 80 (1989) p.83-94,          
+&        TRITA-MAC 374 (1988); C-CO-FE-NI-W '                                   
+        'A. Fernandez Guillermet, Z. Metallkde. Vol 82 (1991) p.478-487; Nb-Zr' 
+        'Balasubramanian, unpublished work (1989); Fe-Ti'                       
+        'Balasubramanian, unpublished work (1989); C-Ti'                        
+        'Balasubramanian, unpublished work (1989); C-Fe-Ti'                     
+        'B. Jonsson and John Agren, Metall. Trans. Vol 18A(1987) p.1395-1401,   
+&       TRITA-MAC 283 (1985); MG-SB'                                            
+        'B. Jonsson, J. Agren, Met.Trans. 17A, (1986) p 607-615,                
+&       TRITA-MAC 254(1985); MG-SN'                                             
+        'B. Jonsson and John Agren, Mater. Sci. and Techn. Vol 2(1986)          
+&       p 913-916, TRITA-MAC 284 (1985); SB-SN'                                 
+        'B. Jonsson, Z. Metallkde. Vol.78(1987) p 810-814, TRITA-MAC 334(1987); 
+&        MG-SB-SN'                                                              
+        C.-P. Chin, S. Hertzman, B. Sundman, TRITA-MAC 203(1987) rev.;          
+&       Co-Cr-Fe-Ni'                                                            
+        'B. Bjorkman, B. Sundman, provisional (1987); FE-S'                     
+        'B. Sundman, J. Phase Equilibria 12 (1991) 127-140; Fe-O'               
+        'B. Sundman, TEST'                                                      
+        'B. Jansson, IM report (1987); C-CO-CR-W'                               
+        'B. Jansson, Private communication, (1992); Fe-Nb-N'                    
+        'Y.-Y. Chuang, K.-C. Hsieh, Y. A. Chang, Metall. Trans. B, (1985)       
+&       vol 16B, pp 277-285; FE-S'                                              
+        'I. Ansara, J.P. Bros, M. Gambino,                                      
+&       CAPHAD Vol 3, (1979) p 225-233; AL-GA-GE, AL-GE-SN, GA-GE-SN'           
+        'I. Ansara, J.P. Bros, C. Girard,                                       
+&       CAPHAD Vol 2, (1978) p 187-196; AL-GA, AL-IN, GA-IN and AL-GA-IN'       
+        'I. Ansara, D. Dutartre, CALPHAD Vol 8, (1984) p 323-342; AL-AS-GA-GE'  
+        'A.J. McAlister, BAPD Vol 5, (1984) p 247-250; AL-BI'                   
+        '*B. Zimmerman, Thesis, Univ. Stuttgart (1976); BI-PB (Bi-Tl)'          
+        'A. Gabriel, C. Chatillon, I. Ansara, to be published in                
+&       High Temp. Sci. (parameters listed in                                   
+&       Calphad Vol 11 (1987) pp 203-218); C-NI'                                
+        'I. Ansara, unpublished assessment (1986); AU-IN-PB'                    
+        'C. Girard, Thesis (Marseille 1985); BI-GA-ZN'                          
+        'O. Teppo, J Niemela, P Taskinen, Report TKK-V-B50 (1989)               
+&       Helsinki Univ. Tech. Finland; BI-CU'                                    
+        'I. Ansara, F. Ajersch, J Phase Equil (1991) p 73-77; GA-PB'            
+        'I. Ansara, unpublished assessment (1986); PB-SN'                       
+        'I. Ansara, unpublished assessment (1986); AL-PB'                       
+        'I. Ansara, unpublished assessment (1986); CU-MG'                       
+        'I. Ansara, J.P. Nabot, Caphad (in press 1990); Au-In'                  
+        'C. Coughanowr, U.R. Kattner, T.J. Anderson, Calphad (1990)             
+&        pp 193-202; Al-Sb'                                                     
+        'C. Coughanowr, Thesis (Florida 1991); Al-In'                           
+        'C. Chatillon, I. Ansara, A. Watson, B.B. Argent, Calphad, (1990)       
+&       pp 203-214; 'As-Ga As-In'                                               
+        'I Ansara, unpublished work (1991); Ga-Hg'                              
+        'I Ansara, unpublished work (1991); Cr-Si'                              
+        'M. Hamalainen, K. Jaaskelainen, R. Luoma, M. Nuotio, P. Taskinen and   
+&       O. Teppo, CALPHAD 14 (1990) 125-137; Cu-Nb and Cu-V'                    
+        'Unpublished work by Unknown (1991); As-Pb'                             
+        'Unpublished work by Unknown (1991); Al-Hg'                             
+        'I Ansara, P Willemin B Sundman (1988); Al-Ni'                          
+        'V.P. Itkin, C.B. Alcock, P.J. van Ekeren and H.A.J. Oonk               
+&       BAPD Vol 9, No 6 (1988); AL-CA'                                         
+        'J. Lacaze and B. Sundman, Metall. and Mater. Trans. 22A (1991)         
+&       2211-2223; Fe-Si and Fe-Si-C'                                           
+        'J-O Andersson, Calphad Vol 11 (1987) p 271-276, TRITA 0314; C-CR'      
+        'J-O Andersson, Met. Trans A, Vol 19A, (1988) p 627-636                 
+&       TRITA 0207 (1986); C-CR-FE'                                             
+        'J-O Andersson, Calphad Vol 12 (1988) p 1-8 TRITA 0317 (1986); C-MO'    
+        'J-O Andersson, Int. J. Thermophys. Vol 6, (1985), p 411-419            
+&       TRITA 0230 (1984); CR'                                                  
+        'J-O Andersson, B. Sundman, CALPHAD Vol 11, (1987), p 83-92             
+&       TRITA 0270 (1986); CR-FE'                                               
+        '*J-O Andersson, A Fernandez Guillermet, P Gustafson, Calphad Vol 11    
+&       (1987) p 361-364 TRITA 0319 (1986); CR-MO-W lattice stabilities'        
+        'J-O Andersson, CALPHAD Vol 7, (1983), p 305-315 (parameters revised    
+&       1986 due to new decription of V) TRITA 0201 (1982); FE-V'               
+        'J-O Andersson, Calphad Vol 12 (1988), p 9-23                           
+&       TRITA 0321 (1986); C-FE-MO'                                             
+        'J-O Andersson, Met Trans A, Vol 19A, (1988) p 1385-1394                
+&       TRITA 0322 (1986); CR-FE-MO'                                            
+        'J-O Andersson, TRITA-MAC 323 (1986); C-CR-FE-MO'                       
+        'S. Hassam, M. Gambino, M. Gaune-Escard, J.P. Bros, J. Agren,           
+&        Metall. Trans. Vol 19A (1988) p409-416, Report at KTH; AG-AU-Ge'       
+        'S. Hassam,, J. Agren, M. Gaune-Escard, J.P. Bros,                      
+&        Metall. Trans. Vol 21A(1990) p 1877-1884, Report at KTH; Ag-Au-Si'     
+        'J. SLYCKE, L Sproge and J Agren, TRITA 0358 (1987); C-FE-N'            
+        'K. Frisk, Report D 60, KTH, (1984); CR-MO'                             
+        'K. Frisk, Calphad Vol 11(1987) p 127-134, Fe-N'                        
+        'K. Frisk, Calphad (1990), Vol 14, p 311-320; MO-NI'                    
+        'K. Frisk, Metall. Trans. Vol 21A (1990) p 2477-2488,                   
+&       TRITA 0409 (1989); CR-FE-N'                                             
+        'K. Frisk, TRITA-MAC 393 (1989); CR-N,FE-N,MO-N,CR-MO-N'                
+        'K. Frisk, TRITA-MAC 422 (1990); CR-FE-N-NI'                            
+        'K. Frisk, Int. J. Thermophys. Vol 12(1990) p 417-431,                  
+&       TRITA-MAC 419 (1990); N-NI'                                             
+        'K. Frisk, TRITA-MAC 428 (1990); FE-MO-NI'                              
+        'K. Frisk, TRITA-MAC 429 (1990); CR-MO-NI'                              
+        'K. Frisk, TRITA-MAC 433 (1990); FE-CR-MO-NI-N'                         
+        'Unassessed parameter, inserted to make this phase less stable.'        
+        'Unassessed parameter, linear combination of unary data. (MU, SIGMA)'   
+        'F.H. Hayes, H.L. Lukas, G. Effenberg, G. Petzow,'                      
+&       Z. fur Metallkde, Vol 77 (1986), No 11, p 749-754; AG-CU-PB'            
+        '*E.Irle, B.Gather, R.Blachnik, U.Kattner, H.L.Lukas and G.Petzow,      
+&       Z. fur Metallkde, Vol 78 (1987), No 8, p 535-543; GA-TE'                
+        'U.Kattner, H.L.Lukas and G.Petzow, CALPHAD 10 (1986) 103-116; PB-TE'   
+        'U.Kattner, H.L.Lukas and G.Petzow, J.Less-Com. Met 114 (1986) 129-144; 
+&        SN-TE'                                                                 
+        '*U.Kattner, H.L.Lukas and G.Petzow, E.Irle, B.Gather, R.Blachnik,      
+&       Z. fur Metallkde, Vol 79 (1988), No 1, p 32-40; SN-PB-TE'               
+        'Unplublished (1990); AL-P'                                             
+        'M. Hillert and L.-I. Staffansson, Metall. Trans. Vol 6B(1975) p 37-41; 
+&       Fe-FeS'                                                                 
+        'M.H. Rand, AERE Harwell, report at KTH; CS-K'                          
+        'M.H. Rand, AERE Harwell, report at KTH; CS-NA'                         
+        'M.H. Rand, AERE Harwell, report at KTH; CS-RB'                         
+        'M.H. Rand, AERE Harwell, report at KTH; K-RB'                          
+        'M.H. Rand, AERE Harwell, report at KTH; NA-RB'                         
+        'H. Ohtani, Report (1990); N-V'                                         
+        'H. Othani, Report (1990); N-TI'                                        
+        'H. Othani, Report (1990); FE-N-TI'                                     
+        'H. Othani, Report (1990); FE-N-V'  , all submitted to Calphad          
+        'A. Dinsdale, T. Chart, MTDS NPL, unpublished work (1986); FE-NI'       
+        'CODATA Bulletin vol 28 (1978), Recommended by H. Davies, MTDS NPL;     
+&       Aqueous concentrated solutions at 298.15 K.'                            
+        'H. Davis, MTDS NPL (1986); Water dilute solution'                      
+        'A. Dinsdale, T. Chart, MTDS NPL, Unpublished work (1986); CR-NI'       
+        'MTDS NPL; GA-ZN'                                                       
+        'T. Chart, Gohil, MTDS NPL (1985), unpublished work; KCL-NACL'          
+        'T. Chart, Gohil, MTDS NPL (1985), unpublished work; CACL2-ZNCL2'       
+        'CODATA value, recomended by MTDS NPL; KCL'                             
+        'JANAF TABLES, recomended by MTDS NPL; NACL'                            
+        'MTDS NPL (1986); SIO2'                                                 
+        'MTDS NPL (1986?); KCL-ZNCL2'                                           
+        'MTDS NPL (1987); CAO'                                                  
+        'T. CHART, MTDS NPL, unpublished work (1987); C-PB'                     
+        'Olesinski, Abbaschian, BAPD, 1984, 5(3), 271; OK by NPL (1987); PB-SI' 
+        'A T Dinsdale and D D Gohil, NPL, unpublished work (1987); Fe-PB'       
+        'A T Dinsdale and D D Gohil, NPL, unpublished work (1987); Mn-PB'       
+        'NPL, unpublished work (1989); C-Cr-Ni'                                 
+        'NPL, unpublished work (1989); Fe-Mn-Si'                                
+        'NPL, unpublished work (1989); C-Mn-Si'                                 
+        '*NPL, No report (1989); Mo-Si'                                         
+        '*NPL, No report (1989); Ni-Si'                                         
+        '*NPL, No report (1989); Cr-Si'                                         
+        'NPL, unpublished work (1989); Cr-Mn'                                   
+        'NPL, unpublished work (1989); Mn-Ni'                                   
+        'NPL, unpublished work (1989); Cr-P'                                    
+        'NPL, unpublished work (1989); Mn-Ti'                                   
+        'NPL, unpublished work (1989); Ni-P'                                    
+        'NPL, unpublished work (1989); P-Si'                                    
+        'J.R. Taylor, A.T. Dinsdale, Z. Metallkde. Vol 81 (1990) p 354-366,     
+&       report (1989); Ni-O, Cr-O, Cr-Ni-O'                                     
+        'P. Gustafson, Carbon vol 24, (1986) p 169-176, TRITA-MAC 236(1984); C' 
+        'P. Gustafson, Scan. J. Metall. vol 14, (1985) p 259-267                
+&       TRITA 0237 (1984); C-FE'                                                
+        'A. Gabriel, P. Gustafson, I. Ansara, Calphad 11 (1987)p 203-218,       
+&       TRITA-MAC 285 (1986); C-FE-NI'                                          
+        'P. Gustafson, Met.Trans 18A (1987) P 175-188,                          
+&       TRITA 0257 (1985); C-FE-W'                                              
+        'P. Gustafson, A. Gabriel, I Ansara,                                    
+&       Z Metallkde, vol 78 (1986) p 151-156, TRITA 0263(1985); C-NI-W'         
+        'P. Gustafson, Mat. Sci and Tech. Vol 2, (1986) p 653-658               
+&       TRITA 0212 (1985); C-W'                                                 
+        'P. Gustafson, Calphad Vol 11 (1987) p 277-292,                         
+&       TRITA-MAC 320 (1986); CR-NI-W '                                         
+        'P. Gustafson, Report D70 (1986); Cr-W'                                 
+        'P. Gustafson, Int. J of Thermophys vol 6, (1985) p 395-409,            
+&       TRITA-MAC 239(1984); W'                                                 
+        'P. Gustafson, Z. fur Metallkde, Vol 79 (1988), No 6, p 388-396;        
+&       TRITA-MAC 329 (1987); MO-W, FE-MO-W '                                   
+        'P. Gustafson, Metall. Trans. 19A(1988) p 2547-2554,                    
+&       TRITA-MAC 348, (1987); C-CR-FE-W'                                       
+        'P. Gustafson, Z. fur Metallkde, Vol 79 (1988), No 6, p 397-402;        
+&       TRITA-MAC 330 (1987); C-MO-W'                                           
+        'P. Gustafson, Z. Metallkde. Vol 79 (1988) p 421-425,                   
+&       TRITA-MAC 331 (1987); C-FE-MO-W'                                        
+        'P. Gustafson, TRITA-MAC 342, (1987); CR-FE-W'                          
+        'P. Gustafson, TRITA-MAC 354 (1987); C-Cr-Fe-Mo-W'                      
+        'P Gustafson, Inst. Met. Res. (IM-2549, 1990); C-P, FE-P, C-FE-P'       
+        'P Gustafson, Inst. Met. Res. (IM-2549, 1990); C-CU-FE'                 
+        'P Gustafson, Inst. Met. Res. (IM-2549, 1990); CU-FE-P'                 
+        'P Gustafson, Inst. Met. Res. (IM-2549, 1990); FE-NI-P'                 
+        'P Gustafson, Inst. Met. Res. (IM-2549, 1990); FE-MO-P'                 
+        'P Gustafson, Inst. Met. Res. (Sweden) (1990); Estimations of           
+& C-CR-FE-V, C-CR-FE-MO-V-W, FE-N-W, FE-MN-N, FE-N-SI, CR-N-V, C-CR-N,          
+& FE-MO-N, CR-N-W, CR-TI-N'                                                     
+        'P-Y Chevalier, Thermochimica Acta, 130 (1988) p 25-32; AG-GE'          
+        'P-Y Chevalier, Thermochimica Acta, 130 (1988) p 33-41; AG-SI'          
+        'P-Y Chevalier, Thermochimica Acta, 136 (1988) p 45-54; AG-SN'          
+        'P-Y Chevalier, Thermochimica Acta, 136 (1988) p 15-24; AU-BI'          
+        'P-Y Chevalier, Thermochimica Acta, 141 (1989) p 217-226; AU-GE, AU-SI' 
+        'P-Y Chevalier, Thermochimica Acta, 155 (1989) p 211-225; AU-SB, AU-TL' 
+        'P-Y Chevalier, Thermochimica Acta, 130 (1988) p 1-13; AU-SN'           
+        'P-Y Chevalier, Thermochimica Acta, 132 (1988) p 111-116; BI-GE'        
+        'P-Y Chevalier, Thermodata SGTE report; BI-HG'                          
+        'P-Y Chevalier, Calphad Vol 12, 4 (1988) pp 383-392 (rev 1990) ; BI-IN' 
+        'P-Y Chevalier, Thermodata SGTE report; BI-K'                           
+        'P-Y Chevalier, Thermodata SGTE report; BI-SN'                          
+        '*P-Y Chevalier, Thermodata; CR-CU'                                     
+        'P-Y Chevalier, Thermodata SGTE report; CR-V'                           
+        'P-Y Chevalier, Thermochimica Acta, 156 (1989) p 383-392; CU-TL'        
+        'P-Y Chevalier, Thermochimica Acta, 155 (1989) p 227-240;               
+&GE-IN, GE-PB, GE-SB, GE-TL, GE-ZN'                                             
+        'P-Y Chevalier, Thermodata SGTE report; MO-NB'                          
+        'P-Y Chevalier, Thermodata SGTE report; SI-SN'                          
+        'C. Vahlas, P-Y Chevalier and E. Blanquet, Calphad 13 (1989) 273-292;   
+&       Mo-Si and Si-W'                                                         
+        'P. Spencer, O. Kubaschewski, Report at KTH; AG-AL'                     
+        '*D. Ludecke, report at KTH; AL-CU'                                     
+        '*D. Ludecke, K. Hack, Z Metallkde vol 77, (1986) p 145-151; AL-MG'     
+        'D. Ludecke, Z Metallkde vol 77, (1986) p 278-283; AL-MG-SI'            
+        'S. an Mey, K. Hack,                                                    
+&       Z Metallkde vol 77, (1986) p 454-459; AL-SI-ZN'                         
+        'S. an Mey, G. Effenberg, Z Metallknde vol 77, (1986) p 449-453; AL-ZN' 
+        'D. Ludecke, report at KTH; CU-SI'                                      
+        'P. Spencer, report at KTH (to appear in CALPHAD?); CU-ZN'              
+        '*S. an Mey, report at KTH; NI-SI'                                      
+        '*W. Huang, Scan. J. Metall. vol 19 (1990) pp 26-32;                    
+&       TRITA-MAC 410 (rev 1989); C-MN'                                         
+        'W. Huang, TRITA-MAC 431 (1990); C-V'                                   
+        'W. Huang, Mater. Sci. and Techn. Vol 6(1990) p 687-694,                
+&       TRITA-MAC 389 (1989); C-NB'                                             
+        '*A. Fernandez Guillermet and W. Huang, Int. J. Thermophys.             
+&       Vol 11(1990) p 949-969, TRITA-MAC 396 (1989); MN'                       
+        'W. Huang, Calphad Vol 13 (1989) pp 243-252,                            
+&       TRITA-MAC 388 (rev 1989); FE-MN'                                        
+        'W. Huang, Calphad Vol 13 (1989) pp 231-242, TRITA-MAC 386; CO-MN'      
+        'W. Huang, Z. Metallkde. Vol 81 (1990) p 397-404,                       
+&       TRITA-MAC 390 (1989); FE-NB, C-FE-NB'                                   
+        'W. Huang, Calphad Vol 14(1990) p 11-22, TRITA-MAC 398(1989); CO-FE-MN' 
+        'W. Huang, Metall. Trans. Vol 21A(1990) p 2115-2123,                    
+&       TRITA-MAC 411 (Rev 1989); C-FE-MN'                                      
+        'W. Huang, TRITA-MAC 432 (Rev 1989,1990); FE-V'                         
+        'W. Huang, TRITA-MAC 432 (1990); C-Fe-V'                                
+        'A. Fernandez Guillermet and W. Huang, Z. Metallkde. Vol 79(1988)       
+&       p 88-95, TRITA-MAC 349(1987); V, Nb and Ta lattice stability *'         
+        'W. Huang, TRITA-MAC 439(1990), Mn-V, Fe-Mn-V *'                        
+        'A. Fernandez Guillermet and W. Huang, TRITA-MAC 440(1990), Mn-V-C *'   
+        'W. Huang, TRITA-MAC 441 (1990), Fe-Mn-V-C *'                           
+        'A. Jansson, TRITA-MAC 340 (1987); CU-FE-NI'                            
+        'A. Jansson, Report D 73, Metallografi, KTH, (1986); CU-FE'             
+        'A. Jansson, Metall. Trans. 23A (1992) 2953-2962; AL-MN'                
+        'A. Jansson, Modified parameter due to new fcc-Mg; Cu-Mg'               
+        'Recomended by SGTE, source not given'                                  
+        'Alan Dinsdale, SGTE Data for Pure Elements, NPL Report DMA(A)195       
+&       September 1989'                                                         
+        'Alan Dinsdale, SGTE Data for Pure Elements, NPL Report DMA(A)195       
+&       Rev. August 1990'                                                       
+        'SGTE Substance database, AUG 1989.'                                    
+        'Marion Seiersten, unpublished work (1989); Al-Fe'                      
+        'J.E. Tibballs, SI Norway (1991) Rep. 890221-5; Mn-Si'                  
+        'P. Miodownik and N. Saunders, Lattice stabilities'                     
+        'N. Saunders; unpublished work (1986); CR-CU'                           
+        'Chandrakasekan et. al, (1987) provisional; CU-FE-P-C'                  
+        'N. Saunders, Calphad 14 (1990) 61-70; Al-Mg and Mg-Li'                 
+        'N. Saunders, COST 507 report (1991); Al-Ti-V'                          
+        'N. Saunders, Z fur Metallkde (1987); Al-Cr'                            
+        'N. Saunders, unpublished research, COST-507, (1991); Al-Cu'            
+        'Li-Mei Pan, unpublished research (1991), B-Cr, B-Fe, B-Mo, B-Ni, B-V'  
+        'M. Hillert, B. Sundman and X. Wang, Metall. Trans. 21B(1990) 303-312;  
+&       TRITA-MAC 355 (1987), Report D 92; CaO-SiO2'                            
+        'M. Hillert, B. Sundman and X. Wang, TRITA-MAC 402 (1989); Al2O3-SiO2'  
+        'X. Wang, M. Hillert and B. Sundman, TRITA-MAC 407 (1989);              
+&       Al2O3-CaO-SiO2'                                                         
+        'M. Hillert and X. Wang, Calphad 13 (1989) p 253-266,                   
+&       TRITA-MAC 392 (1989); MgO-SiO2'                                         
+        'X. Wang, TRITA-MAC ? (1989); CaO-MgO-SiO2'                             
+        'M. Hillert and X. Wang, Calphad 13(1989) 262-271, TRITA-MAC 382(1988); 
+&       CaO-MgO'                                                                
+        'B. Hallstedt, J. Am. Ceram. Soc. 73(1990) 15-23,TRITA-MAC 380 (1989);  
+&        Al2O3-CaO'                                                             
+        'B. Hallstedt; Al2O3-MgO'                                               
+        'B. Hallstedt; Al2O3-CaO-MgO'                                           
+        'M. Hillert, M. Selleby and B. Sundman, Metall. Trans.,                 
+&       TRITA-MAC 397; Ca-Fe-O'                                                 
+        'M. Hillert and Caian Qui, Metall. Trans. Vol 21A (1990) p 1673-1679,   
+&       TRITA-MAC 412 (1989); Cr-Fe-Ni'                                         
+        'M. Hillert and Caian Qui, TRITA-MAC 434 (1990); C-Cr-Fe-Ni'            
+        'H. Du and M. Hillert, TRITA-MAC 435(1990); C-Fe-N'                     
+        'M. Kowalski, RWTH, unpublished work (1990); Cu-Zn'                     
+        'M. Paajunen, unpublished work (1989); Si-Ti'                           
+        'Byeong-Joo Lee, unpublished revision (1991); C-Cr-Fe-Ni'               
+        'Byeong-Joo Lee, TRITA-MAC 474 (1991), Cr-Fe-V'                         
+        'Byeong-Joo Lee, TRITA-MAC 475 (1991), C-Cr-Fe-V'                       
+        'COST-507 project (1991)'                                               
+        'C Anglezio unpublished work (1991); Al-Ca-Si'                          
+        'C Anglezio unpublished work (1991); Ca-Si'                             
+        'C Anglezio unpublished work (1991); Al-Ca'                             
+        'A Watson, Sheffield (1991); Al-Ga'                                     
+        'Byeong-Joo Lee, Calphad (1993), revison of Fe-Cr & Fe-Ni liquid'       
+        'Byeong-Joo Lee, Metall. Trans. 24A (1993) 1919-1933; Cr-Mn & Fe-Cr-Mn' 
+        'Byeong-Joo Lee, Metall. Trans. 24A (1993) 1017-1025; Fe-Cr-Mn-C'       
+        'Byeong-Joo Lee, KRISS, unpublished research, during 1993-1995'         
+        'W. Huang, Metal. Mater. Trans. 27A (1996) 3591-3600; Nb-N'             
+        'W. Huang and M. Selleby, Z. Metallkd. 88 (1997) 55-62; Nb-C & Nb-W-C'  
+        'S. Jonsson, Z. Metallkd 87 (1996) 703-712; TRITA-MAC 487 ('92); Ti-C'  
+        'S. Jonsson, Z. Metallkd 87 (1996) 691-702; TRITA-MAC 505 ('93); Ti-N'  
+        'S. Jonsson, Z. Metallkd 87 (1996) 713-720; TRITA-MAC 506 ('93); Ti-C-N'
+        'S. Jonsson, Z. Metallkd. 84 (1993) 106-117; W-N'                       
+        'S. Jonsson, Z. Metallkd. 87 (1996) 784-787; Ti-W & Ti-W-N'             
+        'S. Jonsson, Z. Metallkd. 87 (1996) 788-795; Ti-W-C & Ti-W-C-N'         
+        'K. Frisk, IM-2929, Swedish Inst. Met. Res. (1992); Cu-N & Fe-Cu-N'     
+        'J.-H. Shim et al., Metall. Mater. Trans. 27B (1996) 955-966; Ti-Mo-C'  
+        'C.-S. Oh, J. Korean Inst. Met. & Mater., 33 (1995) 129-136; Ti-Ni'     
+        'K. Zeng and R. Schmid-Fetzer, Z. Metallkd. 87 (1996) 7; Ti-N'          
+        'Caian Qiu, ISIJ International 32 (1992) 1117-1127; C-Cr-Fe-Mo'         
+        'C. Qiu and A. Fernandez Guillermet, Z. Metallkd. 84 (1993) 11-12; Mn-N'
+        'Caian Qiu, Metall. Trans. A, 24A (1993) 629-645; Fe-Mn-N'              
+        'Caian Qiu, Metall. Trans. A, 24A (1993) 2393-2409; Cr-Fe-Mn-N'         
+        'K. Frisk, Calphad 17 (1993) 335-349; Cr-Mn-N'                          
+        'K. Frisk, Z. Metallkd. 82 (1991) 59-66; TRITA-MAC 414 ('89); Fe-Ni-N'  
+        'A. Kusoffsky and B. Jansson, Calphad 21 (1997) 321-33; Co-Cr, Co-Cr-C' 
+        'A. Forsberg and J. Agren, J. Phase Equil. 14 (1993) 354-363; Fe-Mn-Si' 
+        'A. Jansson, TRITA-MAC 558 (1995); Al-Fe-Mn'                            
+        'A. Jansson and T.G. Chart, COST 507 Report (1997); Al-Fe-Mn'           
+        'S. an Mey, Calphad 16 (1992) 255-260; Cu-Ni'                           
+        'I. Ansara and A. Jansson, TRITA-MAC 533 (1993); Cu-Fe'                 
+        'K. Zeng and M. Hamalainen, Calphad 19 (1995) 93-104; Cr-Cu'            
+        'N. Saunders, COST 507 Report (1998); Cr-Ti'                            
+        'N. Saunders, COST 507 Report (1998); Al-Ti'                            
+        'B.-J. Lee and N. Saunders, Z. Metallkd. 88 (1997) 152-161; Al-O-Ti'    
+        'N. Saunders, COST 507 Report (1998); Al-Cr'                            
+        'N. Saunders, COST 507 Report (1998); Al-Cu'                            
+        'J. Gr”bner, H.-L. Lukas and F. Aldinger, Calphad 20 (1996)             
+&       247-254; Si-C and Al-Si-C'                                              
+        'N. Saunders, COST 507 Report (1998); Mn-Ti'                            
+        'M. Jacobs (1991), Revised by T. Buehler (1997), COST 507 Report; Cu-Si'
+        'H.J. Seifert, COST 507 Report (1998); Si-Ti'                           
+        'M.H. Rand and N. Saunders, COST 507 Report (1998); Si-V'               
+        'N. Saunders, COST 507 Report (1998); Ti-V'                             
+        'J. Korb and K. Hack, COST 507 Report (1998); Ni-V'                     
+        'J.-H. Shim, C.-S. Oh and D.N. Lee, J. Korean Inst. Met. & Mater. 34    
+&       (1996) 1385-1393; Fe-P'                                                 
+        'H.L. Lukas, COST 507 Report (1998); Al-B'                              
+        'B. Kasper and H.L. Lukas, COST 507 Report (1998); B-C'                 
+        'H.L. Lukas, COST 507 Report (1998); Al-N'                              
+        'H. Wen and H.L. Lukas, COST 507 Report (1998); B-N'                    
+        'S. Jonsson, Metall. Trans. 23A (1992) 3141-3149; Al-Fe-N'              
+        'N. Saunders, COST 507 Report (1998); Al-Mo'                            
+        'N. Saunders, COST 507 Report (1998); Al-Nb'                            
+        'N. Saunders, COST 507 Report (1998); Al-W'                             
+        'S. Fries and H.L. Lukas, COST 507 Report (1998); B-Si'                 
+        'C. B„tzner, COST 507 Report (1998); B-Ti'                              
+        'T. G”decke, F. Sommer and H.-L. Lukas, unpublished work (1996); Al-Si  
+&       parameters available from J. Gr”bner et al. Calphad 20 (1996) 247'      
+        'J. Gr”bner, H.-L. Lukas and F. Aldinger, J. Alloys Compounds 220       
+&       (1995) 8-14; Al-C'                                                      
+        'L.F.S. Dumitrescu, M. Hillert and N. Saunders,                         
+&       J. Phase Equilibria 19 (1998) 441-448; Fe-Ti'                           
+        'L.F.S. Dumitrescu and M. Hillert, ISIJ International 39 (1999)         
+&       84-90; Fe-Ti-C, Fe-Ti-N & Fe-Ti-C-N'                                    
+        'L.F.S. Dumitrescu, M. Hillert and B. Sundman, Z. Metallkunde 90        
+&       (1999) in press; Ti-C & Ti-C-N'                                         
+        'H.-J. Chung, J.-H. Shim and D.N. Lee, J. Alloys and Compounds 282      
+&       (1999) 142-148; Ti-Mo-C-N'                                              
+        'J.-H. Shim, H.-J. Chung and D.N. Lee, J. Alloys and Compounds 282      
+&       (1999) 175-181; Ni-P'                                                   
+        'J.-H. Shim, H.-J. Chung and D.N. Lee, Z. Metallkunde (1999)            
+&       in press; Fe-C-P'                                                       
+        'K. Frisk and B. Uhrenius, Metall. and Mater. Trans. 27A (1996)         
+&       2869-2880; Mo-C-N & Fe-Mo-C-N'                                          
+        'Y. Du, R. Schmid-Fetzer and H. Ohtani, Z. Metallkunde 88 (1997)        
+&       545-556; N-V'                                                           
+        'A. Fernandez Guillermet and S. Jonsson, Z. Metallkd. 83 (1992)         
+&       21-31; Co-N'                                                            
+        'A. Fernandez Guillermet and S. Jonsson, Z. Metallkd. 83 (1992)         
+&       165-175; Co-Fe-N'                                                       
+        'K.C. Hari Kumar, P. Wollants and L. Delaey, Calphad 18 (1994)          
+&       71-79; Nb-Ti, Nb-V & Ti-V'                                              
+        'P. Bellen, K.C. Hari Kumar and P. Wollants, Z. Metallkd. 87 (1994)     
+&       972-978; Ni-Ti'                                                         
+        'I. Ansara, N. Dupin, H.-L. Lukas and B. Sundman,                       
+&       J. Alloys and Compounds 247 (1997) 20-30; Al-Ni'                        
+        'J. Miettinen, Calphad 23 (1999) 141-154; Cr-P & Cr-Fe-P'               
+        'L.F.S. Dumitrescu, KTH 1999, unpublished reassessment of Ti-W-C-N'     
+        'K.C. Hari Kumar, I. Ansara, P. Wollants and L. Delaey,                 
+&       J. Alloys and Compounds 267 (1998) 105-112; Co-Nb'                      
+        'M. Ekruth et al., KTH 1998, unpublished work; Co-Nb-C and Co-Ti-C'     
+        'N. Saunders, ThermoTech 1996, unpublished work; Co-Ti'                 
+        'K.C. Hari Kumar, Leuven 1999, unpublished work; Fe-Ti'                 
+        'G. Cacciamani, R. Ferro, I. Ansara, N. Dupin; Co-Ti                    
+&       submitted to Intermetallics'                                            
+        'M. Kowalski and P.J. Spencer, Calphad 19 (1995) 229-243;               
+&       Cr-O, Fe-O and Ni-O'                                                    
+        'Fe-Cr-Ni-O-S database by M. Kowalski, RWTH Aachen, 1992'               
+        'J.R. Taylor, A.T. Dinsdale, Z. Metallkde. 84 (1993) 335-345; Cr-Fe-O'  
+        'R. Luoma, Calphad 19 (1995) 279-295; Fe-Ni-O'                          
+        'B. Hallstedt, Calphad 16 (1992) 53-61; Si-O'                           
+        'M. Wang and B. Sundman, Metall. Trans. 23B (1992) 821-831; Mn-O'       
+        'S. Fries, 1996, unpublished work; Ni-S and Fe-Ni-S'                    
+        'M. Hillert, S. Jonsson and B. Sundman, Z. Metallkd. 83 (1992) 648-654; 
+&       Si-N-O'                                                                 
+        'J.R. Taylor, A.T. Dinsdale, M. Hillert and M. Selleby, Calphad 16      
+&       (1992) 173-179; Al-O'                                                   
+        'J.G. Costa Neto, S.G. Fries, H.L. Lukas, S. Gama and G. Effenberg,     
+&       Calphad 17 (1993) 219-228; Cr-Nb'                                       
+        'H.L. Lukas, COST 507 Report (1998); Al-Mg'                             
+        'T. Buhler, S.G. Fries, P.J. Spencer, H.L. Lukas, J. Phase Equil. 19    
+&       (1998) 317-333; Al-Cu-Mg'                                               
+        'I. Ansara, COST 507 Report (1998); Cr-Mg'                              
+        'C.A. Coughnanowr, I. Ansara, R. Luoma, M. Hamalainen and H.L. Lukas,   
+&       Z. Metallkd. 82 (1991) 574-581; Cu-Mg'                                  
+        'P. Liang, H.J. Seifert, H.L. Lukas, G. Ghosh, G. Effenberg and         
+&       F. Aldinger, Calphad 22 (1998) 527-544; Cu-Mg-Zn'                       
+        'J. Tibballs, COST 507 report (1998); Fe-Mg'                            
+        'J. Tibballs, COST 507 report (1998); Mg-Mn'                            
+        'M.H.G. Jacobs and P.J. Spencer, Calphad 22 (1998) 513-525; Mg-Ni'      
+        'H. Heufel, T. Godecke, H.L. Lukas, F. Sommer, J. Alloys Compds. 247    
+&       (1997) 31-42; Mg-Si and Al-Mg-Si'                                       
+        'P. Liang, T. Tarfa, J.A. Robinson, S. Wagner, P. Ochin, M.G. Harmelin, 
+&       H.J. Seifert, H.L. Lukas and F. Aldinger, Thermochim. Acta 314 (1998)   
+&       87-110; Mg-Zn and Al-Mg-Zn'                                             
+        'J. Miettinen, Calphad 22 (1998) 231-256; Fe-Si and                     
+&       Fe-Si-C'                                                                
+        'B. Sundman, 1999, revision of the liquid Fe-Si-C description'          
+        'S. Jonsson, Ph.D. Thesis; TRITA-MAC 519 ('93); W-C and Ti-W-C'         
+        'S. an Mey, Z. Metallkd. 84 (1993) 451-455; Al-Zn'                      
+        'I. Ansara, COST 507 Report (1998); Cr-Zn'                              
+        'M. Kowalski and P.J. Spencer, J. Phase Equil. 14 (1993) 432-438; Cu-Zn'
+        'M.H.G. Jacob and P.J. Spencer, CALPHAD 20 (1996) 307-320; Si-Zn and    
+&       Al-Si-Zn'                                                               
+        'A. Davydov and U.R. Kattner, J. Phase Equil. 20 (1999) 5-16; Co-Mo'    
+        'N. Saunders, COST 507 Report (1998); Al-Nb-Ti'                         
+        'B. Sundman, unpublished work (1992); Fe-S and Cu-S,                    
+&       liquid description for Fe-S is from Y.A.Chang'                          
+        'B. Sundman, unpublished work (1999); C-Co-W'                           
+        'Byeong-Joo Lee, unpublished work at KTH (1999);                        
+&       update of steel database'                                               
+        'K. Zeng and R. Schmid-Fetzer, Thermodynamics of Alloy Formation,       
+&       eds. Y.A. Chang and F. Sommer, TMS, 1997.; Ti-Al-N'                     
+        'No one' !                                                              
+                                                                                                                                                                                                                                                                                                                                                                                                                                                 

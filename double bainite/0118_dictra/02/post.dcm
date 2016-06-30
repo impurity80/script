@@ -1,0 +1,86 @@
+go d-m
+
+read result
+
+post
+
+select-cell
+1
+
+s-d-a x dist glo
+
+s-d-a y
+w-p
+c
+
+
+s-p-c time 0 0.01 0.1 0.3 1 3 10 30
+
+
+plot
+
+
+
+make_experimental_data profile_1.txt
+
+
+@?<Hit_return_to_continue>
+
+
+select-cell
+2
+
+plot
+
+make_experimental_data profile_2.txt
+
+
+@?<Hit_return_to_continue>
+
+select_cell 1
+s-d-a x time
+s-d-a y iww(1,c)
+
+plot
+
+
+make_experimental_data c_aver_1.txt
+
+
+@?<Hit_return_to_continue>
+
+
+select_cell 1
+s-d-a x time
+s-d-a y w(c)
+s-p-c interface last
+
+plot
+
+
+
+@?<Hit_return_to_continue>
+
+select_cell 2
+s-d-a x time
+s-d-a y iww(2,c)
+
+plot
+
+
+make_experimental_data c_aver_2.txt
+
+
+@?<Hit_return_to_continue>
+
+
+
+select_cell 2
+s-d-a x time
+s-d-a y w(c)
+s-p-c interface last
+
+plot
+
+
+@?<Hit_return_to_continue>

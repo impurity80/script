@@ -1,0 +1,127 @@
+go data
+sw tcfe7
+def-sys fe c
+rej ph * all
+res ph bcc fcc
+get
+
+app mobfe2
+def-sys fe
+rej ph * all
+res ph bcc fcc
+get
+
+go d-m
+
+set-cond glob T 0 773.15; * N
+
+
+@?<Hit_return_to_continue>
+enter-region ferrite
+enter-grid ferrite 0.6e-6 linear 50
+enter-phase active ferrite matrix bcc
+
+enter-composition
+ferrite
+bcc
+w-p
+c
+linear
+0.3
+0.3
+
+
+@?<Hit_return_to_continue>
+create_new_cell
+1
+enter-region austenite
+enter-grid austenite 0.2e-6 linear 60
+enter-phase act austenite matrix fcc#1
+
+
+enter-composition
+austenite
+fcc#1
+w-p
+c
+linear
+0.3
+0.3
+
+
+
+@?<Hit_return_to_continue>
+
+set-simulation-time
+200
+
+
+
+
+
+
+@?<Hit_return_to_continue>
+
+simulate
+
+
+@?<Hit_return_to_continue>
+
+post
+
+select-cell
+1
+
+s-d-a x dist glo
+
+s-d-a y
+w-p
+c
+
+
+s-p-c time 0 0.0001 0.001 0.01 0.03 0.1 0.5 10 20
+
+
+plot
+
+
+
+make_experimental_data profile_1.txt
+
+
+@?<Hit_return_to_continue>
+
+select-cell
+2
+
+plot
+
+make_experimental_data profile_2.txt
+
+
+@?<Hit_return_to_continue>
+
+select_cell 1
+s-d-a x time
+s-d-a y iww(1,c)
+
+plot
+
+
+make_experimental_data c_aver_1.txt
+
+
+@?<Hit_return_to_continue>
+
+
+select_cell 2
+s-d-a x time
+s-d-a y iww(2,c)
+
+plot
+
+
+make_experimental_data c_aver_2.txt
+
+
+@?<Hit_return_to_continue>

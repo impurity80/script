@@ -1,0 +1,22 @@
+go data
+sw TCFE6
+def-sys
+fe c mn si cu v ni cr ti p s 
+l-sys
+const
+rej ph /all
+rest ph bcc fcc cementite
+get 
+go p-3
+l-st
+
+s-c t=1000 p=101325 n=1 
+s-c w(c)=0.000017 w(mn)=0.00356 w(si)=0.00006 w(cu)=0.00009 
+s-c w(v)=0.00002 w(ni)=0.0001 w(cr)=0.0001 w(ti)=0.00055
+s-c w(p)=0.0003 w(s)=0.0001
+c-e
+l-e
+
+
+set-interac
+

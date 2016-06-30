@@ -1,0 +1,77 @@
+go data
+sw tcfe7
+def-sys fe c
+rej ph * all
+res ph bcc fcc
+get
+
+app mobfe2
+def-sys fe
+rej ph * all
+res ph bcc fcc
+get
+
+go d-m
+
+set-cond glob T 0 673.15; * N
+
+
+@?<Hit_return_to_continue>
+enter-region ferrite
+enter-grid ferrite 3.0e-6 linear 100 
+enter-phase active ferrite matrix bcc
+
+enter-composition
+ferrite
+bcc
+w-p
+c
+linear
+0.3
+0.3
+
+
+
+create_new_cell
+1
+enter-region austenite
+enter-grid austenite 1.0e-6 linear 100 
+enter-phase act austenite matrix fcc#1
+
+
+
+enter-composition
+austenite
+fcc#1
+w-p
+c
+linear
+0.3
+0.3
+
+
+
+
+save result
+Y
+
+@?<Hit_return_to_continue>
+
+set-simulation-time
+50
+
+
+
+
+
+
+
+
+
+
+@?<Hit_return_to_continue>
+
+simulate
+
+
+@?<Hit_return_to_continue>

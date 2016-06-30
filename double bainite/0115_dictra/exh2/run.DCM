@@ -1,0 +1,40 @@
+
+
+
+@@
+@@ FILE TO RUN EXH2
+@@
+
+@@
+@@ READ THE SETUP FROM FILE
+@@
+
+go d-m
+
+read exh2
+
+@@
+@@ SET THE SIMULATION TIME
+@@
+set-sim-time 50,,,,,,,,,,
+
+
+
+@@
+@@ ENABLE PARA-EQUILIBRIUM MODEL
+@@
+para
+YES
+AUTO
+AUTO
+
+@@
+@@ START THE SIMULATION
+@@
+sim
+
+
+set-inter
+
+
+

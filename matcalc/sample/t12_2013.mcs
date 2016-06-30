@@ -1,0 +1,115 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for using the MatCalc console according to Tutorial 12.
+The following contents will be covered:
+
+ - Getting help in the MatCalc console
+ - Obtaining lists of available commands for different modules
+ - Command syntax and abbreviations
+ - Example: calculating an equilibrium using the command-line
+ - Evaluating numerical expressions and variables
+ - Defining, using and plotting functions
+
+Database: mc_sample_fe.tdb
+Author: P. Warczok
+Creation date: 10.11.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 26.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core $ Use "core" module (MatCalc uses "core" module by default anyway) 
+
+new-workspace $ creates a new workspace 
+
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop_run_script $ stop script
+endif
+
+
+$$************************************************************************************************** 
+                                           BASICS
+**************************************************************************************************$$
+
+help-workspace                           $ Opens a list of available commands in workspace module
+help-module                              $ Opens a list of available commands in mc_core module
+help-module IO                           $ Opens a list of available commands in mc_core: IO module 
+
+
+$$************************************************************************************************** 
+                     EXAMPLE: CALCULATING AND EQUILIBRIUM USING THE COMMAND-LINE
+**************************************************************************************************$$
+
+open-thermodyn-database mc_sample_fe2.tdb         $ Thermodynamic database: mc_sample_fe2.tdb 
+$ Lists the contents of the thermodynamic ([e]quilibrium) database
+list-database-contents E
+select-elements C FE                             $ Components: Fe, C
+select-phases LIQUID BCC_A2 FCC_A1 CEMENTITE     $ Selects the liquid, bcc, fcc and cementite phases
+read-thermodyn-database
+
+enter-composition WP C=0,4                       $ Composition: 0.4 wt.% C
+
+set-temperature-celsius 700                      $ Temperature 700C
+set-automatic-startvalues
+calculate-equilibrium                            $ Initial equilibrium
+
+
+$$************************************************************************************************** 
+                                      EVALUATING EXPRESSIONS
+**************************************************************************************************$$
+
+$------------------------------------ Numerical expressions ---------------------------------------$
+show-expression 4/5 
+show-expression pi
+show-expression 4/5*3
+show-expression 4/(5*3)
+show-expression 4+4*2
+show-expression (4+4)*2
+
+$-------------------------------------- Expressions in x ------------------------------------------$
+show-expression 3*x
+set-function-expression function1 3*x            $ Defining function1
+set-function-expression function2 x**2           $ Defining function2
+set-function-expression function3 x^2            $ Defining function3
+
+new-gui-window p1
+$$ For the current plot[.], in [s]eries section, [n]ew series with the [f]unction/expression
+ result for "function1" is plotted in the range of -10 - 10 $$
+set-plot-option . S N F function1 -10..10
+$ Plotting the result for "function2" is plotted in the range of -10 - 10
+set-plot-option 1 S N F function2 -10..10
+$ Plotting the result for "function3" is plotted in the range of -10 - 10
+set-plot-option 1 S N F function3 -10..10
+
+
+$$************************************************************************************************** 
+                              EXPRESSIONS USING MATCALC VARIABLES
+**************************************************************************************************$$
+
+set-function-expression function4 F$BCC_A2*X$BCC_A2$C         $ Defining function4
+set-function-expression function5 F$CEMENTITE*X$CEMENTITE$C   $ Defining function5
+show-expression function4	
+show-expression function5
+show-expression function4+function5
+show-expression XS$C-(function4+function5)
+
+
+$$************************************************************************************************** 
+SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_12
+
+

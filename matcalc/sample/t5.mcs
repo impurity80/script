@@ -1,0 +1,103 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for MatCalc built-in variables and graphical output according to Tutorial 5.
+The following contents will be covered:
+
+ - Adding further plots to a plot window
+ - Using the built-in variables
+ - Defining a default x-axis
+ - Modifying the series
+ - Adding a new series to a plot
+ - Removing a series from a plot
+ - Duplicating and locking series
+ - Editing series data
+ - Converting series to tables
+
+Database: mc_sample_fe.tdb
+Author: P. Warczok
+Creation date: 20.03.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 22.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core                   $ Use "core" module (MatCalc uses "core" module by default anyway) 
+
+read-workspace Tutorial_4         $ Loads the workspace "Tutorial_4.mcw"
+
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop_run_script $ stop script
+endif
+  
+
+$$************************************************************************************************** 
+                              ADDING PLOTS OF DIFFERENT VARIABLES
+**************************************************************************************************$$
+
+$ Creating new [x]-y plot in GUI-window no.[2] (the number can read on the window bar)
+create-new-plot X 2
+$ For current plot [.] in [s]eries section [n]ew series, [b]uffer result variable "dfm$*" is plotted
+set-plot-option . S N B dfm$* %s
+
+
+$-------------- Examples of other plots (every plot is plotted in a separate window) --------------$
+create-new-plot X .                     $ Creating new [x]-y plot in current GUI-window no.[.]
+set-plot-option . S N B gmp$* %s        $ "gmp$*" -Molar Gibbs energy of various phases
+
+$ Chemical potential of carbon
+create-new-plot X .                     $ Creating new [x]-y plot in current GUI-window no.[.]
+set-plot-option . S N B mup$*$c %s      $ "mup$*$c" - Chemical potential of carbon in various phases
+
+$ Molar heat capacity
+create-new-plot X .
+set-plot-option . S N B cpp$* %s        $ "cpp$*" - Molar heat capacity of various phases
+
+$ Arranging plots in the columns with the [n]umber of columns of "2"
+set-gui-window-property . N 2      
+
+
+$------------------------------- Changing standard x-axis settings --------------------------------$
+$ In default x-axi[s] section, the option of [u]sing it is switched to [y]es
+set-gui-window-property . S U Y
+$ Setting (x)-axis variable to "C" (T$C)
+set-gui-window-property . X T$C
+$ In default x-axi[s] section, the [t]itle for the default x-axis is set to "Temperature [C]"
+set-gui-window-property . S T Temperature [C]
+
+
+$$************************************************************************************************** 
+                                  MODIFYING THE SERIES IN PLOTS
+**************************************************************************************************$$
+
+$------------------------- Carbon concentration in the different phases ---------------------------$
+create-new-plot X .
+set-plot-option . S N B x$*$c %s			  $ "x$*$c" - mole fraction of C in various phases
+
+
+$$ -------------- The modification of carbon concentration from mole fractions ---------------------
+-------------- to weight percent - removing the old series and adding the new ones ---------------$$
+$ For plot no. [6], in [s]eries section, [r]emoval of all[*] series is performed	
+set-plot-option 6 S R *
+$ "x$*$c$wp" - weight percent of C in various phases
+set-plot-option . S N B x$*$c$wp %s
+$ In the [a]xis section, the [y]-axis no.[1] becomes a [t]itle "Carbon content of phase [wt.%]"
+set-plot-option . A Y 1 T Carbon content of phase [wt.%]
+
+
+$$************************************************************************************************** 
+                                        SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_5 $ Saves workspace as "Tutorial_5.mcw"

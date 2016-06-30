@@ -1,0 +1,81 @@
+use-module core
+new-workspace f
+
+open-thermodyn-database mc_fe2.045.tdb
+select-elements fe c si mn al cr ni mo nb w
+select-phases liquid fcc_a1 bcc_b2 m23c6 m7c3 laves
+read-thermodyn-database
+
+set-reference-element fe
+enter-composition wp c=0.084 si=0.17 mn=1.95 al=2.3
+enter-composition wp cr=14.48 ni=21.18 mo=2.52
+enter-composition wp w=0.01 nb=0.87
+
+set-temperature-celsius 1200
+set-automatic-startvalues
+calculate-equilibrium
+
+change-phase-status bcc_b2#01 f s s
+change-phase-status bcc_b2#02 f s s 
+
+create-precipitation-domain austenite
+set-precipitation-parameter austenite x fcc_a1
+set-precipitation-parameter austenite t d e 1e12
+set-precipitation-parameter austenite t g 100e-6
+set-precipitation-parameter austenite t l 1
+
+create-new-phase fcc_a1#01 p
+set-precipitation-parameter fcc_a1#01_p0 d austenite
+set-precipitation-parameter fcc_a1#01_p0 c 25
+set-precipitation-parameter fcc_a1#01_p0 n s d
+set-precipitation-parameter fcc_a1#01_p0 n c o
+set-precipitation-parameter fcc_a1#01_p0 s d r 0.01
+
+read-mobility-database mc_fe_2.007.ddb
+
+new-gui-window p1
+set-gui-window-property . s u y
+set-gui-window-property . s t time [s]
+set-gui-window-property . s y log
+set-gui-window-property . s s 1e-10..
+
+set-plot-option . s n b f$fcc_a1#01_p0
+set-plot-option . a y 1 t phase fraction
+
+set-simulation-parameter e 3.6e9
+set-simulation-parameter p y 
+
+set-simulation-parameter t i 750
+start-precipitate-simulation
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$fcc_a1#01_p0 750C
+
+set-simulation-parameter t i 700
+start-precipitate-simulation
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$fcc_a1#01_p0 700C
+
+set-simulation-parameter t i 650
+start-precipitate-simulation
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$fcc_a1#01_p0 650C
+
+set-simulation-parameter t i 600
+start-precipitate-simulation
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$fcc_a1#01_p0 600C
+
+set-ttp-parameter e 3.6e9
+set-ttp-parameter t 1200
+set-ttp-parameter o 600
+set-ttp-parameter d 25
+set-ttp-parameter n 0.1
+start-ttp-simulation
+
+new-gui-window p6
+set-plot-option . p r r 
+set-plot-option . s n d fcc_a1#01_p0 0.05
+set-plot-option . s n d fcc_a1#01_p0 0.5
+set-plot-option . s n d fcc_a1#01_p0 0.95
+set-plot-option . a x 1 t time [s]
+set-plot-option . a y 1 t temperature [c]

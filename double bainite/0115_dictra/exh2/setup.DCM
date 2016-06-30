@@ -1,0 +1,135 @@
+
+
+
+@@---------------------------------------------------------------------
+@@ SETUP FILE FOR CALCULATION OF THE GROWTH OF FERRITE INTO AUSTENITE
+@@ IN AN FE-2.02%NI-0.0885%C ALLOY USING THE PARA-EQUILIBRIUM MODEL.
+@@ THE RESULTS ARE COMPARED WITH EXPERIMENTAL INFORMATION FROM HUTCHINSON
+@@ ET AL. (MMT A 2004, IN PRESS).
+@@---------------------------------------------------------------------
+
+
+@@
+@@ RETRIEVE DATA FROM DATABASE
+@@
+go da
+
+@@
+@@ SELECT DATABASE FOR THERMODYNAMIC DATA
+@@
+sw tcfe7
+def-sys fe ni c
+rej ph * all
+res ph bcc fcc
+get
+
+@@
+@@ SWITCH TO MOBILITY DATABASE TO RETRIEVE MOBILITY DATA
+@@
+app mobfe2
+def-sys fe ni c
+rej ph * all
+res ph bcc fcc
+get
+
+@@
+@@ ENTER THE DICTRA MONITOR
+@@
+go d-m
+
+@@
+@@ ENTER GLOBAL CONDITION T. 
+@@
+set-cond glob T 0 973; * N
+
+@@
+@@ WE START BY ENTERING REGION ferrite AND austenite WHEREIN WE
+@@ PUT THE BCC AND FCC PHASE RESPECTIVELY. THE ferrite REGION IS 
+@@ ASSUMED INITIALLY TO BE VERY THIN, 1E-9 METERS.
+@@
+enter-region 
+ferrite
+
+enter-region 
+austenite
+
+
+
+@@
+@@ ENTER GRIDS INTO THE REGIONS.
+@@
+enter-grid 
+ferrite
+1e-9
+linear
+10
+
+enter-grid austenite  
+50e-6
+geo
+64
+1.05
+
+@@
+@@ ENTER ACTIVE PHASES INTO REGIONS
+@@
+enter-phase 
+active
+ferrite
+matrix    
+bcc
+
+enter-phase 
+active
+austenite  
+matrix    
+fcc#1
+
+
+
+@@
+@@ ENTER INITIAL COMPOSITION INTO BCC. 
+@@ 
+enter-composition 
+ferrite 
+bcc
+fe 
+w-p
+c 
+linear
+0.0885
+0.0885
+ni
+linear
+2.02
+2.02
+
+@@
+@@ ENTER INITIAL COMPOSITION INTO FCC. 
+@@ 
+enter-composition 
+austenite 
+fcc#1
+fe  
+w-p
+c  
+linear
+0.0885
+0.0885
+ni
+linear
+2.02
+2.02
+
+
+@@
+@@ SAVE THE SETUP ON A NEW STORE FILE AND EXIT
+@@
+save exh2 y
+
+set-inter
+
+exit
+
+
+

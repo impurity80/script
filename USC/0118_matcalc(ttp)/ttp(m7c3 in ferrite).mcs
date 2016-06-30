@@ -1,0 +1,81 @@
+use-module core
+new-workspace f
+
+open-thermodyn-database mc_fe2.045.tdb
+select-elements fe c b n mn ni cr mo v co nb
+select-phases fcc_A1 bcc_a2 m23c6 m7c3 Mo2M1B2
+read-thermodyn-database
+
+set-reference-element fe
+enter-composition wp c=0.12 mn=0.4 ni=0.2 cr=9.0
+enter-composition wp mo=1.5 v=0.2 co=1.2 nb=0.05
+enter-composition wp b=0.01 n=0.015
+
+set-temperature-celsius 600
+set-automatic-startvalues
+calculate-equilibrium
+
+create-new-phase m7c3 p
+set-precipitation-parameter m7c3_p0 c 25
+set-precipitation-parameter m7c3_p0 n s g
+set-precipitation-parameter m7c3_p0 n c p
+
+create-precipitation-domain ferrite
+set-precipitation-parameter ferrite x bcc_a2
+set-precipitation-parameter m7c3_p0 d ferrite
+
+set-precipitation-parameter ferrite t d e 1e12
+set-precipitation-parameter ferrite t g 100e-6
+set-precipitation-parameter ferrite t l 1
+set-precipitation-parameter m7c3_p0 s d r 0.01
+
+read-mobility-database mc_fe_2.007.ddb
+
+new-gui-window p1
+set-gui-window-property . s u y
+set-gui-window-property . s t time [s]
+set-gui-window-property . s y log
+set-gui-window-property . s s 1e-10..
+
+set-plot-option . s n b f$m7c3_p0
+set-plot-option . a y 1 t phase fraction
+
+set-simulation-parameter e 3.6e11
+set-simulation-parameter t i 600
+set-simulation-parameter p y 
+start-precipitate-simulation
+
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$m7c3_p0 600C
+
+set-simulation-parameter t i 590
+start-precipitate-simulation
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$m7c3_p0 590C
+
+set-simulation-parameter t i 580
+start-precipitate-simulation
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$m7c3_p0 580C
+
+set-simulation-parameter t i 570
+start-precipitate-simulation
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$m7c3_p0 570C
+
+
+set-ttp-parameter e 3.6e11
+set-ttp-parameter t 700
+set-ttp-parameter o 500
+set-ttp-parameter d 5
+set-ttp-parameter n 0.1
+start-ttp-simulation
+
+new-gui-window p6
+set-plot-option . p r r 
+set-plot-option . s n d m7c3_p0 0.05
+set-plot-option . s n d m7c3_p0 0.5
+set-plot-option . s n d m7c3_p0 0.95
+set-plot-option . a x 1 t time [s]
+set-plot-option . a y 1 t temperature [c]
+

@@ -1,0 +1,41 @@
+go database
+sw tcfe6
+d-sys fe c mn si al
+rej phase /all
+rest phases fcc bcc
+l-sys
+constituent
+get
+
+go p-3
+s-c t=973,p=1e5,n=1
+s-c w(c)=0.0024 w(mn)=0.112 w(si)=0.0072 w(al)=0.0129
+c-e
+l-e
+screen
+vwcs
+
+@?<Hit_return_to_continue>
+
+s-c t=900
+c-e
+l-e
+
+
+@?<Hit_return_to_continue>
+
+ch-stat
+phase
+fcc
+dorm
+
+s-c t=800
+c-e
+l-e
+
+
+@?<Hit_return_to_continue>
+
+
+set-interact
+

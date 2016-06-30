@@ -1,0 +1,189 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for introduction to precipitation calculations according to Tutorial 14.
+The following contents will be covered:
+
+ - Precipitation of cementite in a ferritic matrix in Fe-0.2 wt.% C
+ - Creating a precipitation domain
+ - Creating a precipitate phase
+ - Mobility and physical data
+ - Plotting and interpreting calculation results
+
+Database: mc_sample_fe.tdb
+Author: P. Warczok
+Creation date: 18.11.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 26.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core $ Use "core" module (MatCalc uses "core" module by default anyway) 
+
+new-workspace $ creates a new workspace 
+
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop-run-script $ stop script
+endif
+
+
+$$************************************************************************************************** 
+                          DATABASES, CHEMICAL COMPOSITION, SELECTED PHASES
+**************************************************************************************************$$
+
+open-thermodyn-database mc_sample_fe.tdb               $ Thermodynamic database: mc_sample_fe.tdb 
+select-elements FE C VA                                $ Components: Fe, C
+select-phases BCC_A2 CEMENTITE                         $ Phases: bcc, cementite
+read-thermodyn-database
+
+set-reference-element FE
+enter-composition WP C=0,2                             $ Composition: 0.2 wt.% C
+
+
+$-------------------------------------- Precipitation domain --------------------------------------$
+create-precipitation-domain Ferrite                    $ Creates precipitation domain "Ferrite"
+$ "Ferrite" is defined as a matri[x] phase with bcc structure
+set-precipitation-parameter Ferrite X BCC_A2
+
+
+$--------------------------------------- Precipitate phase ----------------------------------------$
+create-new-phase cementite P                           $ Cementite is defined as a precipitate phase
+$ Initializes the precipitate phase cementite_p0 with 250 [c]lasses
+set-precipitation-parameter CEMENTITE_P0 C 250
+$ Attaches the precipitate phase cementite_p0 to "ferrite" [d]omain
+set-precipitation-parameter CEMENTITE_P0 D Ferrite
+$ In the [n]ucleation section, the nucleation [s]ites are set to [d]islocations
+set-precipitation-parameter CEMENTITE_P0 N S D
+
+
+$------------------------------------- Loading mobility data --------------------------------------$
+read-mobility-database mc_sample_fe.ddb          $ Mobility (diffusion) database: mc_sample_fe.ddb	
+
+
+$--------------------------------- Creating plots for the output ----------------------------------$
+new-gui-window p1 
+set-gui-window-property . S U Y                  $ Default x-axis
+set-gui-window-property . S T Time [h]           $ x-axis title
+set-gui-window-property . S Y log                $ Logarithimic scale on x-axis
+set-gui-window-property . S S 1e-12..            $ Scaling starts from 1e-12
+set-gui-window-property . S F 1/3600             $ Multiplication [f]actor for x-axis
+
+set-plot-option . T Phase fraction of cementite precipitate     $ Plot title
+set-plot-option . A Y 1 T Phase fraction                        $ y-axis title
+set-plot-option . L N                                           $ [N]one legend box
+set-plot-option . S N B F$CEMENTITE_P0 %s        $ Plotting the fraction of cementite phase
+
+new-gui-window p5                                $ Creating a window with histogram
+$ In [s]eries section, [n]ew series for [p]recipitate distribution of "cementite_p0" phase is chosen
+set-plot-option . S N P CEMENTITE_P0
+$ In [h]istogram section, the [n]umber of classes is set to 20
+set-plot-option . H N 20
+set-plot-option . T Cementite precipitate distribution          $ plot title
+set-plot-option . A X 1 T Precipitate radius [nm]               $ x-axis title
+set-plot-option . A X 1 F 1e9                                   $ Multiplication [f]actor for x-axis
+set-plot-option . A Y 1 T Number of precipitates                $ y-axis title
+set-plot-option . L N                                           $ [N]one legend box
+
+
+$$************************************************************************************************** 
+                                         THE CALCULATION
+**************************************************************************************************$$
+
+$$ In the [c]onvergence control parameters section, [n]umerical limit for nucleation density
+ increase factor [b] is set to 1.05 $$
+set-simulation-parameter C N B 1.05
+
+set-temperature-celsius 600              $ Temperature 600C
+set-automatic-startvalues
+calculate-equilibrium                    $ Initial equilibrium
+
+set-simulation-parameter E 3,6e5         $ Simulation end tim[e] is set to 360000 seconds
+$ In [t]emperature section, [i]sothermal option is chosen with 600
+set-simulation-parameter T I 600
+set-simulation-parameter P Y             $ Tem[p]erature in Celsius
+start-precipitate-simulation             $ Starts kinetic simulation
+
+
+$$************************************************************************************************** 
+                                    INTERPRETING THE RESULTS
+**************************************************************************************************$$
+
+create-new-plot X 3 
+set-plot-option . T Number of precipitates             $ Plot title
+set-plot-option . A Y 1 T Number of precipitates [*10<sup>20</sup> m<sup>-3</sup>] $ y-axis title
+set-plot-option . A Y 1 F 1e-20                        $ Multiplication factor for y-axis
+set-plot-option . L N                                  $ No legend
+$ Plotting the number of particles of cementite precipitate
+set-plot-option . S N B NUM_PART$CEMENTITE_P0 %s
+
+create-new-plot X 3 
+set-plot-option . T Nucleation rate                    $ Plot title
+$ y-axis title
+set-plot-option . A Y 1 T Nucleation rate [*10<sup>26</sup> m<sup>-3</sup>s<sup>-1</sup>]
+set-plot-option . A Y 1 F 1e-26                        $ Multiplication factor for y-axis
+set-plot-option . L N                                  $ No legend
+$ Plotting the nucleation rate of cementite precipitate
+set-plot-option . S N B NUCL_RATE$CEMENTITE_P0 %s
+
+
+create-new-plot X 3 
+set-plot-option . T Precipitate radius                            $ Plot title
+set-plot-option . A Y 1 T Precipitate radius [*10<sup>-6</sup> m] $ y-axis title
+set-plot-option . A Y 1 Y log                                     $ Logarithmic scale on y-axis
+set-plot-option . A Y 1 F 1e6                                     $ Multiplication factor for y-axis
+set-plot-option . L B                                             $ Legend on the bottom
+set-plot-option . S N B R_MEAN$CEMENTITE_P0 %s   $ Plotting mean radius of cementite precipitate
+set-plot-option . S N B R_CRIT$CEMENTITE_P0 %s   $ Plotting critical radius of cementite precipitate
+set-plot-option . S N B R_MIN$CEMENTITE_P0 %s    $ Plotting minimal radius of cementite precipitate
+set-plot-option . S N B R_MAX$CEMENTITE_P0 %s    $ Plotting maximal radius of cementite precipitate
+set-plot-option . S M 0 Mean                         $ Renaming series no. 0 to "Mean"
+set-plot-option . S M 1 Critical                     $ Renaming series no. 1 to "Critical"
+set-plot-option . S M 2 Min                          $ Renaming series no. 2 to "Min"
+set-plot-option . S M 3 Max                          $ Renaming series no. 3 to "Max"
+
+set-plot-option 1 G M X Y               $ Switching on the major gridlines for x-axis for plot no. 1
+set-plot-option 1 G M Y Y               $ Switching on the major gridlines for y-axis for plot no. 1
+set-plot-option 3 G M X Y               $ Switching on the major gridlines for x-axis for plot no. 3
+set-plot-option 3 G M Y Y               $ Switching on the major gridlines for y-axis for plot no. 3
+set-plot-option 4 G M X Y               $ Switching on the major gridlines for x-axis for plot no. 4
+set-plot-option 4 G M Y Y               $ Switching on the major gridlines for y-axis for plot no. 4
+set-plot-option 5 G M X Y               $ Switching on the major gridlines for x-axis for plot no. 5
+set-plot-option 5 G M Y Y               $ Switching on the major gridlines for y-axis for plot no. 5
+set-gui-window-property . N 2   $ Arranging plots in the columns with the [n]umber of columns of "2"
+
+create-new-plot P 4                   $ New histogram plot
+$ In [s]eries section, [n]ew series for [p]recipitate distribution of "cementite_p0" phase is chosen
+set-plot-option . S N P CEMENTITE_P0
+set-plot-option . H N 20              $ In [h]istogram section, the [n]umber of classes is set to 20
+$ In [h]istogram section, the histogram [f]requency scaling is set to the [d]ensity
+set-plot-option . H F D
+$ In [h]istogram section, the histogram scale [r]adius option is set to [y]es
+set-plot-option . H R Y
+set-plot-option . T Scaled cementite precipitate size distribution    $ Plot title
+set-plot-option . A X 1 T Scaled radius                               $ x-axis title
+set-plot-option . A Y 1 T Scaled number                               $ y-axis title
+set-plot-option . A X 1 S 0..1,499           $ x-axis scaling in range 0 - 1.499
+set-plot-option . L B                        $ Legend on the bottom
+
+$ Definition of "lsw" function
+set-function-expression lsw x^2*(3/(3+x))^(7/3)*((3/2)/(3/2-x))^(11/3)*exp(-x/(3/2-x))*4/9
+$ Plotting the "lsw" function in the range 0 - 1.499
+set-plot-option . S N F lsw 0..1,499
+
+
+$$************************************************************************************************** 
+                                         SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_14

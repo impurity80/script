@@ -1,0 +1,59 @@
+
+go data
+sw tcfe7
+def-sys fe c  
+l-sys
+const
+rej ph /all
+rest ph fcc
+
+app mobfe2
+def-sys fe  c
+rej ph * all
+res ph fcc
+get
+
+get 
+go p-3
+l-st
+
+s-c t=1073.15 p=101325 n=1 w(c)=0.003
+c-e
+l-e
+
+
+@?<Hit_return_to_continue>
+
+s-a-v 1 t
+673.15
+1073.15
+15
+step
+normal
+
+
+@?<Hit_return_to_continue>
+
+post
+s-lab
+b
+
+
+s-d-a x t-c
+s-d-a y dt(fcc,c)
+
+plot
+
+
+list_data_table diff.txt
+
+
+ent fun t_celsius = t - 273.15;
+
+ent tab 
+y_list
+t_celsius t dt(fcc,c)
+
+tabulate y_list result.txt
+
+@?<Hit_return_to_continue>

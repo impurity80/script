@@ -1,0 +1,99 @@
+use-module core
+new-workspace f
+
+open-thermodyn-database mc_fe2.045.tdb
+select-elements fe c b n mn ni cr mo v co nb
+select-phases fcc_A1 bcc_a2 m23c6 m7c3 Mo2M1B2
+read-thermodyn-database
+
+set-reference-element fe
+enter-composition wp c=0.12 mn=0.4 ni=0.2 cr=9.0
+enter-composition wp mo=1.5 v=0.2 co=1.2 nb=0.05
+enter-composition wp b=0.01 n=0.015
+
+set-temperature-celsius 1000
+set-automatic-startvalues
+calculate-equilibrium
+
+set-step-option y t
+set-step-option r 1420 920 l 10
+set-step-option o c y 
+step-equilibrium 
+
+new-gui-window p1
+set-gui-window-property . x t$c
+set-plot-option . a x 1 t temperature [C]
+set-plot-option . a y 1 t equilibrium phase fraction of MX
+set-plot-option . l n 
+set-plot-option . s n b f$fcc_a1#01
+set-gui-window-property . l
+
+create-new-phase fcc_a1#01 p
+set-precipitation-parameter fcc_a1#01_p0 c 25
+set-precipitation-parameter fcc_a1#01_p0 n s d
+set-precipitation-parameter fcc_a1#01_p0 n c o
+
+create-precipitation-domain austenite
+set-precipitation-parameter austenite x fcc_a1
+set-precipitation-parameter fcc_a1#01_p0 d austenite
+
+set-precipitation-parameter austenite t d e 1e12
+set-precipitation-parameter austenite t g 100e-6
+set-precipitation-parameter austenite t l 1
+set-precipitation-parameter fcc_a1#01_p0 s d r 0.01
+
+read-mobility-database mc_fe_2.007.ddb
+
+set-simulation-parameter e 1e9
+
+new-gui-window p1
+set-gui-window-property . s u n
+set-plot-option . a x 1 t time [s]
+set-plot-option . a x 1 y log
+set-plot-option . a x 1 s 1..
+set-plot-option . a y 1 t NbC phase fraction
+set-plot-option . l r
+
+set-simulation-parameter t i 1000
+start-precipitate-simulation
+
+set-plot-option . s n b f$fcc_a1#01_p0
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$fcc_a1#01_p0 1000C
+
+set-simulation-parameter t i 1010
+start-precipitate-simulation
+
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$fcc_a1#01_p0 1010C
+
+set-simulation-parameter t i 990
+start-precipitate-simulation
+
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$fcc_a1#01_p0 990C
+
+set-simulation-parameter t i 950
+start-precipitate-simulation
+
+set-gui-window-property . l
+set-plot-option . s m -1 *_f$fcc_a1#01_p0 950C
+
+
+set-ttp-parameter e 1e9
+set-ttp-parameter t 1100
+set-ttp-parameter o 950
+set-ttp-parameter d 25
+set-ttp-parameter n 0.1
+start-ttp-simulation
+
+new-gui-window p6
+set-plot-option . p r r 
+set-plot-option . s n d fcc_a1#01_p0 0.05
+set-plot-option . s n d fcc_a1#01_p0 0.5
+set-plot-option . s n d fcc_a1#01_p0 0.95
+set-plot-option . a x 1 t time [s]
+set-plot-option . a y 1 t temperature [c]
+
+
+

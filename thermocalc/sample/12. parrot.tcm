@@ -1,0 +1,16 @@
+go database
+sw flapw
+d-sys fe ti c
+rej phase /all
+rest phases fcc 
+l-sys
+constituent
+get
+
+go parrot
+list_phase_data
+fcc
+
+
+
+@?<Hit_return_to_continue>

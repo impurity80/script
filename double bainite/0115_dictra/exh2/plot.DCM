@@ -1,0 +1,57 @@
+
+@@
+@@ GO TO THE DICTRA MONITOR AND READ THE STORE RESULT FILE
+@@
+go d-m
+
+read exh2
+
+@@
+@@ GO TO THE POST PROCESSOR
+@@
+post
+
+
+@@
+@@ WE WANT TO PLOT THE POSITION OF THE INTERFACE AS A FUNCTION OF TIME
+@@ I.E. THE FERRITE HALF-THICKNESS
+@@
+s-d-a x time
+s-d-a y posi aus low
+
+@@
+@@ APPEND THE EXPERIMENTAL INFORMATION
+@@
+app y exh2.exp 1; 1
+
+@@
+@@ SET TITLE ON DIAGRAM
+@@
+set-title Figure h2
+
+@@
+@@ RENAME AXIS LABELS
+@@
+set-axis-text-status
+x
+NO
+Time (s)
+
+set-axis-text-status
+y
+NO
+Ferrite half-thickness
+
+@@
+@@ PLOT THE RESULTS
+@@
+plot
+
+
+
+set-inter
+
+
+
+
+

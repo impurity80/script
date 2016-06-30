@@ -1,0 +1,55 @@
+go database
+sw tcfe
+d-sys fe ti c
+rej phase /all
+rest phases fcc 
+l-sys
+constituent
+get
+
+go p-3
+s-c t=300,p=1e5,n=1,x(ti)=0.1,x(c)=0.0
+c-e
+l-e
+screen
+vwcs
+
+@?<Hit_return_to_continue>
+s-c x(c)=none
+s-c x(fcc_a1#1,c)=0.0
+c-e
+l-e
+screen
+vwcs
+
+@?<Hit_return_to_continue>
+
+set-axis-var 1 x(ti)
+0.0
+0.99
+0.01
+step
+sep
+post
+s-d-a x x(fcc_a1#1,ti)
+s-d-a y h(fcc_a1#1)
+list_data_table
+hm.txt
+
+set-inter
+
+
+ent tab 
+y_list
+x(fcc_a1#1,ti) hm(fcc_a1#1) gm(fcc_a1#1)
+
+tabulate y_list 1.txt
+
+s-d-a y y_list
+*
+set-lab d
+s-p-f ##1,,,,,
+
+pl
+
+@?<Hit_return_to_continue>

@@ -1,0 +1,110 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for graphical presentation and export of results according to Tutorial 4.
+The following contents will be covered:
+
+ - Creating a new graphical window
+ - Introduction to the variables window
+ - Modifying the appearance of a plot using 'options'
+ - Zooming in and displaying x- and y-values
+ - Exporting a plot as an image and as numerical data
+
+Database: mc_sample_fe.tdb
+Author: P. Warczok
+Creation date: 20.03.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 22.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core                   $ Use "core" module (MatCalc uses "core" module by default anyway) 
+
+read-workspace Tutorial_3         $ Loads the workspace "Tutorial_2.mcw"
+
+select-calc-buffer T=400_to_1600C $ Selects the buffer state to edit
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop_run_script $ stop script
+endif
+
+$$************************************************************************************************** 
+                                       PLOTTING A GRAPH
+**************************************************************************************************$$
+
+new-gui-window p1                                  $ Creating a new window of 'p1' type (XY-diagram)
+$ Plot no. [1] in [s]eries section, [n]ew series with [b]uffer result for "f$*" variables is plotted
+set-plot-option 1 S N B f$* %s
+
+
+$------------------------------- Results from different buffers -----------------------------------$
+$ In the current[.] window, the content of the [b]uffer "C=0_to_1.5_at_500C" is plotted
+set-gui-window-property . B C=0_to_1.5_at_500C
+$ In the current[.] window, the content of the [b]uffer "C=0_to_1.5_at_800C" is plotted
+set-gui-window-property . B C=0_to_1.5_at_800C
+
+
+$----------------------- Changing the format of the temperature-step plot -------------------------$
+set-gui-window-property . B T=400_to_1600C      $ Back to "T=400_to_1600C" buffer
+set-gui-window-property . X T$C                 $ Setting (x)-axis variables to "C" (T$C)
+set-gui-window-property . Y b/w                 $ Changing the plot st(y)le to black and white (b/w)
+set-gui-window-property . Y col_no_symb         $ ... and back to colour
+
+
+$------------------------------------- Setting title ----------------------------------------------$
+$ Plot no.[1] receives [t]itle "Phase fraction versus temperature for Fe-0.4 wt.%C"
+set-plot-option 1 T Phase fraction versus temperature for Fe-0.4 wt.%C
+
+
+$-------------------------------- Options for the plot legend -------------------------------------$
+$ For plot no.[1], in the [l]egend section, the box is put on the [b]ottom of the plot
+set-plot-option 1 L B
+$ In the [l]egend section, the st[y]le of the legend frames is set to [n]one
+set-plot-option 1 L Y N
+
+
+$------------------------------------ Options for the axes ----------------------------------------$
+$ In the [a]xis section, the [x]-axis no.[1] becomes a [t]itle "Temperature [C]"
+set-plot-option 1 A X 1 T Temperature [°C]
+$ In the [a]xis section, the [y]-axis no.[1] becomes a [t]itle "Phase fraction"
+set-plot-option 1 A Y 1 T Phase fraction
+$ In the [a]xis section for the [y]-axis no.[1], the scale t[y]pe is set to [log]arithmic
+set-plot-option 1 A Y 1 Y log
+$ ... and change the [s]cale range will start from 0.01
+set-plot-option 1 A Y 1 S 0.01..
+$ To see the changes on the x-axis, the default x-axi[s] option '[u]se default for all plots' is set to '[n]o'
+set-gui-window-property . S U N
+
+$---------------------------------- Options for the gridlines -------------------------------------$
+$ In the [g]ridlines section, the option of showing [m]ajor grids for [x]-axis is switched to [y]es
+set-plot-option 1 G M X Y
+$ In the [g]ridlines section, the option of showing [m]ajor grids for [y]-axis is switched to [y]es
+set-plot-option 1 G M Y Y
+
+
+$----------------------------------- Options for the series ---------------------------------------$
+$ In the [s]eries section, the rena[m]ing of the series no.[0] to "Liquid" is done
+set-plot-option 1 S M 0 Liquid
+$ In the [s]eries section, the rena[m]ing of the series no.[1] to "Austenite" is done
+set-plot-option 1 S M 1 Austenite
+$ Series no.2 --> "Austenite"
+set-plot-option 1 S M 2 Ferrite 
+$ Series no.3 --> "Cementite"
+set-plot-option 1 S M 3 Cementite
+
+
+$$************************************************************************************************** 
+                                        SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_4 $ Saves workspace as "Tutorial_4.mcw"

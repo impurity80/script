@@ -1,0 +1,43 @@
+use-module core
+new-workspace f
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop_run_script $ stop script
+endif
+
+open-thermodyn-database mc_fe2.045.tdb
+select-elements fe c si mn al cr ni mo nb w
+select-phases liquid fcc_a1 bcc_b2 m23c6 laves
+read-thermodyn-database
+
+set-reference-element fe
+enter-composition wp c=0.102 si=0.18 mn=2.06 al=2.6
+enter-composition wp cr=14.08 ni=20.35 mo=1.48
+enter-composition wp w=2.08 nb=0.97
+
+set-temperature-celsius 1200
+set-automatic-startvalues
+calculate-equilibrium
+
+change-phase-status fcc_a1#01 f s s
+change-phase-status bcc_b2#01 f s s
+change-phase-status bcc_b2#02 f s s 
+
+set-step-option y t 					$ Selects the t[y]pe of calculation: "[T]emperature"
+set-step-option r 1500 800 l 25 		$ The calculation range: 400 - 1600; linear step 25
+set-step-option o c y					$ Temperature in Celsius
+step-equilibrium 
+
+new-gui-window p1                                $ Creating a new window of 'p1' type (XY-diagram)
+
+set-gui-window-property . X T$C                  $ Temperature in Celsius on x-axis
+set-gui-window-property . S U Y                  $ Default x-axis
+set-gui-window-property . S T Temperature [C]    $ Title of x-axis
+
+set-plot-option . S N B F$*                      $ Plotting phase fractions
+set-plot-option . a y 1 y lin
+
+create-new-plot x . 
+set-plot-option . s n b DFM$FCC_A1#01

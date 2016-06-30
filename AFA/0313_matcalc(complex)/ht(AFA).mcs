@@ -1,0 +1,175 @@
+use-module core
+new-workspace f
+
+open-thermodyn-database mc_fe2.045.tdb
+select-elements fe c si mn al cr ni mo nb w
+select-phases liquid fcc_a1 bcc_b2 m23c6 m7c3 laves
+read-thermodyn-database
+
+set-reference-element fe
+enter-composition wp c=0.082 si=0.16 mn=2.0 al=2.4
+enter-composition wp cr=14.3 ni=20.7 mo=2.45
+enter-composition wp w=0.01 nb=0.81
+
+set-temperature-celsius 1200
+set-automatic-startvalues
+calculate-equilibrium
+
+change-phase-status bcc_b2#01 f s s
+change-phase-status bcc_b2#02 f s s 
+
+create-precipitation-domain austenite
+set-precipitation-parameter austenite x fcc_a1
+set-precipitation-parameter austenite t d e 1e12
+set-precipitation-parameter austenite t g 100e-6
+set-precipitation-parameter austenite t l 1
+
+$--------------------------------------------------
+create-new-phase fcc_a1#01 p
+set-precipitation-parameter fcc_a1#01_p0 d austenite
+set-precipitation-parameter fcc_a1#01_p0 c 25
+set-precipitation-parameter fcc_a1#01_p0 n s d
+set-precipitation-parameter fcc_a1#01_p0 n c o
+set-precipitation-parameter fcc_a1#01_p0 s d r 0.01
+
+$-------------------------------------------------
+create-new-phase bcc_b2 p
+set-precipitation-parameter bcc_b2_p0 d austenite
+set-precipitation-parameter bcc_b2_p0 c 25
+set-precipitation-parameter bcc_b2_p0 n s d
+set-precipitation-parameter bcc_b2_p0 n c o
+set-precipitation-parameter bcc_b2_p0 s d r 0.01
+
+$-------------------------------------------------
+create-new-phase m23c6 p
+set-precipitation-parameter m23c6_p0 d austenite
+set-precipitation-parameter m23c6_p0 c 25
+set-precipitation-parameter m23c6_p0 n s g
+set-precipitation-parameter m23c6_p0 n c o
+set-precipitation-parameter m23c6_p0 s d r 0.01
+
+$----------------------------------------------------
+create-new-phase LAVES_PHASE p
+set-precipitation-parameter LAVES_PHASE_P0 d austenite
+set-precipitation-parameter LAVES_PHASE_P0 c 25
+set-precipitation-parameter LAVES_PHASE_P0 n s d
+set-precipitation-parameter LAVES_PHASE_P0 n c o
+set-precipitation-parameter LAVES_PHASE_P0 s d r 0.01
+
+
+read-mobility-database mc_fe_2.007.ddb
+
+$--------------------------------------------
+create-heat-treatment sample_ht
+
+append-ht-segment sample_ht
+edit-ht-segment sample_ht . s 1400
+edit-ht-segment sample_ht . 1 25 -1
+edit-ht-segment sample_ht . d n austenite
+
+append-ht-segment sample_ht
+edit-ht-segment sample_ht . 1 700 1
+edit-ht-segment sample_ht . d y
+
+append-ht-segment sample_ht
+edit-ht-segment sample_ht . 3 700 1.44e7 $ 4000 hour
+edit-ht-segment sample_ht . d y
+
+$------------------------------------------------
+
+new-gui-window p1
+set-gui-window-property . s u y
+set-gui-window-property . s t time [h]
+set-gui-window-property . s y log
+set-gui-window-property . s s 1e-10..
+set-gui-window-property . s f 1/3600
+
+set-plot-option . s n b f$fcc_a1#01_p0
+set-plot-option . s n b f$bcc_b2_p0
+set-plot-option . s n b f$m23c6_p0
+set-plot-option . s n b f$LAVES_PHASE_P0
+set-plot-option . a y 1 t phase fraction
+set-plot-option . a y 1 y log
+
+create-new-plot x . 
+set-plot-option . s n b r_mean$fcc_a1#01_p0
+set-plot-option . s n b r_mean$bcc_b2_p0
+set-plot-option . s n b r_mean$m23c6_p0
+set-plot-option . s n b r_mean$LAVES_PHASE_P0
+set-plot-option . a y 1 t radius
+set-plot-option . a y 1 y log
+
+create-new-plot x . 
+set-plot-option . s n b num_part$fcc_a1#01_p0
+set-plot-option . s n b num_part$bcc_b2_p0
+set-plot-option . s n b num_part$m23c6_p0
+set-plot-option . s n b num_part$LAVES_PHASE_P0
+set-plot-option . a y 1 t number of precipitate
+set-plot-option . a y 1 y log
+
+create-new-plot x . 
+set-plot-option . s n b EIE$fcc_a1#01_p0
+set-plot-option . s n b EIE$bcc_b2_p0
+set-plot-option . s n b EIE$m23c6_p0
+set-plot-option . s n b EIE$LAVES_PHASE_P0
+set-plot-option . a y 1 t interfacial energy
+set-plot-option . a y 1 y lin
+
+$$create-new-plot x . 
+set-plot-option . s n b nucl_rate$fcc_a1#01_p0
+set-plot-option . s n b nucl_rate$mo2m1b2_p0
+set-plot-option . s n b nucl_rate$m23c6_p0
+set-plot-option . s n b nucl_rate$m7c3_p0
+set-plot-option . s n b nucl_rate$LAVES_PHASE_P0
+set-plot-option . s n b nucl_rate$zet_P0
+set-plot-option . a y 1 t nucleation rate
+set-plot-option . a y 1 y log
+$$
+
+create-new-plot x . 
+set-plot-option . s n b t$c
+set-plot-option . a y 1 y lin
+
+new-gui-window p1
+set-gui-window-property . s t time [h]
+set-gui-window-property . s y log
+set-gui-window-property . s s 1e-10..
+set-gui-window-property . s f 1/3600
+
+set-plot-option . s n b x$fcc_a1$*
+set-plot-option . a y 1 y log
+
+create-new-plot x .
+set-plot-option . s n b x$fcc_a1#01_p0$*
+set-plot-option . a y 1 y log
+
+create-new-plot x .
+set-plot-option . s n b x$bcc_b2_p0$*
+set-plot-option . a y 1 y log
+
+create-new-plot x .
+set-plot-option . s n b x$m23c6_p0$*
+set-plot-option . a y 1 y log
+
+create-new-plot x .
+set-plot-option . s n b x$laves_phase_p0$*
+set-plot-option . a y 1 y log
+
+set-gui-window-property . n 2
+
+new-gui-window p5
+set-gui-window-property . s u n 
+set-plot-option . s n p fcc_a1#01_p0
+set-plot-option . s n p bcc_b2_p0
+set-plot-option . s n p m23c6_p0
+set-plot-option . s n p LAVES_PHASE_P0
+set-plot-option . h n 25
+set-plot-option . h f f
+
+set-simulation-parameter t h sample_ht 10
+start-precipitate-simulation
+
+
+
+
+

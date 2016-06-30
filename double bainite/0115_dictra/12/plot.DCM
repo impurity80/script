@@ -1,0 +1,107 @@
+@@
+@@ GO TO THE DICTRA MONITOR AND READ THE STORE RESULT FILE
+@@
+go d-m
+
+read result
+
+@@
+@@ GO TO THE POST PROCESSOR
+@@
+post
+
+
+@@
+@@ WE WANT TO PLOT THE POSITION OF THE INTERFACE AS A FUNCTION OF TIME
+@@ I.E. THE FERRITE HALF-THICKNESS
+@@
+s-d-a x time
+s-d-a y posi aus low
+
+@@
+@@ SET TITLE ON DIAGRAM
+@@
+set-title Figure h2
+
+@@
+@@ RENAME AXIS LABELS
+@@
+set-axis-text-status
+x
+NO
+Time (s)
+
+set-axis-text-status
+y
+NO
+Ferrite half-thickness
+
+@@
+@@ PLOT THE RESULTS
+@@
+plot
+
+
+
+make_experimental_data interface.txt
+
+@?<Hit_return_to_continue>
+
+s-d-a x dist glo
+
+s-d-a y
+w-p
+c
+
+
+s-p-c time 0 0.001 0.01 0.1 0.5 1 5 10 20
+
+
+plot
+
+
+
+make_experimental_data profile_1.txt
+
+
+@?<Hit_return_to_continue>
+
+
+
+
+s-d-a x time
+s-d-a y iww(bcc,c)
+
+
+
+plot
+
+
+make_experimental_data aver_bcc.txt
+
+
+@?<Hit_return_to_continue>
+
+
+
+
+
+s-d-a x time
+s-d-a y iww(fcc,c)
+
+
+
+plot
+
+
+make_experimental_data aver_fcc.txt
+
+
+@?<Hit_return_to_continue>
+
+set-inter
+
+
+
+
+

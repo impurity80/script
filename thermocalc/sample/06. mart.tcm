@@ -1,0 +1,64 @@
+go database
+sw tcfe6
+d-sys fe c mn si al
+rej phase /all
+rest phases fcc bcc
+l-sys
+constituent
+get
+
+go p-3
+s-c t=973,p=1e5,n=1
+s-c w(c)=0.0024 w(mn)=0.112 w(si)=0.0072 w(al)=0.0129
+c-e
+l-e
+screen
+vwcs
+
+@?<Hit_return_to_continue>
+
+s-c w(c)=none w(mn)=none w(si)=none w(al)=none
+s-c w(fcc,c)=0.0024 w(fcc,mn)=0.112 w(fcc,si)=0.0072 w(fcc,al)=0.0129
+s-c t=300
+c-e
+l-e
+screen 
+vwcs
+
+@?<Hit_return_to_continue>
+
+show_value GM(FCC)
+show_value W(FCC,*)
+
+@?<Hit_return_to_continue>
+
+s-c w(fcc,c)=none w(fcc,mn)=none w(fcc,si)=none w(fcc,al)=none
+s-c w(bcc,c)=0.0024 w(bcc,mn)=0.112 w(bcc,si)=0.0072 w(bcc,al)=0.0129
+s-c t=300
+c-e
+l-e
+screen 
+vwcs
+
+@?<Hit_return_to_continue>
+
+show_value GM(BCC)
+show_value W(BCC,*)
+
+@?<Hit_return_to_continue>
+
+set-axis-var 1 t
+600
+1100
+10
+step
+sep
+post
+s-d-a x t-c
+s-d-a y DGM(FCC)
+list_data_table
+fcc.txt
+
+pl
+
+@?<Hit_return_to_continue>

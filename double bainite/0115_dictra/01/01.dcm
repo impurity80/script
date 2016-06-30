@@ -1,0 +1,87 @@
+go data
+sw tcfe7
+def-sys fe ni
+rej ph * all
+res ph fcc
+get
+
+app mobfe2
+def-sys fe ni
+rej ph * all
+res ph fcc
+get
+
+go d-m
+
+set-cond glob T 0 1400; * N
+
+
+@?<Hit_return_to_continue>
+
+enter-region
+austenite
+
+enter-grid
+austenite
+1e-4
+linear
+60
+
+
+enter-phase
+act
+austenite
+matrix
+fcc#1
+
+
+enter-composition
+austenite
+fcc#1
+fe
+w-p
+ni
+linear
+10
+50
+
+
+
+@?<Hit_return_to_continue>
+
+set-simulation-time
+1e6
+
+
+
+
+
+
+@?<Hit_return_to_continue>
+
+simulate
+
+
+@?<Hit_return_to_continue>
+
+post
+s-d-a
+x
+dist
+glo
+
+s-d-a
+y
+w-p
+ni
+
+
+s-p-c
+time
+0 1e5 3e5 1e6
+
+
+plot
+
+
+@?<Hit_return_to_continue>

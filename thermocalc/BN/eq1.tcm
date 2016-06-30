@@ -1,0 +1,55 @@
+go data
+sw tcfe7
+def-sys fe c n b ti al
+l-sys
+const
+rej phase /all
+rest phase bcc fcc aln bn_hp4
+get 
+go p-3
+l-st
+
+
+s-c t=1473.15 p=101325 n=1 
+s-c w(c)=0.0008 w(n)=0.00012 w(b)=0.00002 w(ti)=0.001 w(al)=0.0001 
+c-e
+l-e
+
+
+@?<Hit_return_to_continue>
+
+s-a-v 1 t
+1073.15
+1473.15
+10
+s-a-v 2 w(n)
+0.0
+0.0002
+0.00001
+map
+
+
+
+@?<Hit_return_to_continue>
+
+post
+
+s-d-a x w(n)
+s-d-a y t-c
+
+
+set_label b
+plot
+
+
+list_data_table result.txt
+
+
+ent tab 
+y_list
+t w(n)
+
+
+tabulate y_list tab.txt
+@?<Hit_return_to_continue>
+

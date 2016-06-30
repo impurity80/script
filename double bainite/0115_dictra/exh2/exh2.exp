@@ -1,0 +1,14 @@
+PROLOG 1
+ 
+ XTYPE LINEAR
+ YTYPE LINEAR
+ XLENGTH        11.5000    
+ YLENGTH        11.5000    
+ TITLE   
+ DATASET 1
+
+ BLOCK X=C1; Y=C2;       GOC=C3,S109;
+  6.16    4.06e-6
+  10.27   5.94e-6
+  20.55   1e-5
+ BLOCKEND

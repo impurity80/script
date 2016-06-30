@@ -1,0 +1,245 @@
+$$************************************************************************************************** 
+************************************** GENERAL INFORMATION *****************************************
+****************************************************************************************************
+
+Script for complex multi-stage heat treatments according to Tutorial 17.
+The following contents will be covered:
+
+ - Definition of complex heat treatments
+ - The heat treatment editor
+ - Multiple precipitation domains / matrix phase transformations
+
+In this tutorial, we simulate the precipitation of NbC in the solid state during the continuous 
+casting of steel and the subsequent austenitization treatment. The austenite / ferrite 
+transformations of the matrix phases are taken into account. The continuous casting simulation 
+starts at 1400C with linear cooling to room temperature. The austenitization treatment is carried 
+out at 1100C for 2 hours. Heating and cooling rates are assumed to be 1 K/s. Furthermore, we assume 
+that precipitation of NbC occurs only at austenite grain boundaries in the austenite during 
+continuous casting. After transformation to ferrite, we assume that precipitation occurs at grain 
+boundaries and dislocations.
+
+Database: mc_sample_fe2.tdb
+Author: P. Warczok
+Creation date: 10.11.2008
+This is a script for MatCalc version 5.44 (rel 0.008)
+Last update: 26.09.2011 (G. Stechauner, Update for 5.44)
+
+
+**************************************************************************************************** 
+************************************** SETUP INFORMATION *******************************************
+**************************************************************************************************$$
+
+use-module core $ Use "core" module (MatCalc uses "core" module by default anyway) 
+
+new-workspace $ creates a new workspace 
+
+
+$$************************************************************************************************** 
+**************************************** SYSTEM SETUP **********************************************
+**************************************************************************************************$$
+
+$ verify correct MatCalc version (is accessible as internal variable) 
+if (matcalc_version<5440008)
+   send-dialog-string "MatCalc version must be 5.44.0008 or higher to run this script. Stopping."
+   stop-run-script $ stop script
+endif
+
+
+$$************************************************************************************************** 
+                       DATABASES, CHEMICAL COMPOSITION, SELECTED PHASES
+**************************************************************************************************$$
+	
+open-thermodyn-database mc_sample_fe2.tdb             $ Thermodynamic database: mc_sample_fe2.tdb 
+select-elements FE C NB VA                           $ Components: Fe, C, Nb
+select-phases BCC_A2 FCC_A1                          $ Phases: bcc, fcc
+read-thermodyn-database 
+
+set-reference-element FE
+enter-composition WP C=0,1 NB=0,7                    $ Composition: 0.1 wt.% C, 0.7 wt.% Nb
+
+set-temperature-celsius 1000                         $ Temperature 1000C
+set-automatic-startvalues 
+calculate-equilibrium                                $ Initial equilibrium
+
+create-precipitation-domain austenite                $ Creates precipitation domain "austenite"
+set-precipitation-parameter austenite X FCC_A1       $ Austenite domain structure: fcc
+create-precipitation-domain ferrite                  $ Creates precipitation domain "ferrite"
+set-precipitation-parameter ferrite X BCC_A2         $ Ferrite domain structure: bcc
+
+create-new-phase FCC_A1#01 P                         $ Creates NbC precipitate	
+
+read-mobility-database mc_sample_fe.ddb         $ Mobility (diffusion) database: mc_sample_fe.ddb	
+
+
+$-------------------------------------------- Setup GUI -------------------------------------------$
+new-gui-window p1
+set-gui-window-property . S U Y                    $ Use default x-axis
+set-gui-window-property . S T Time [s]             $ Default x-axis title
+set-gui-window-property . S Y log                  $ Logarithmic scale on default x-axis
+set-gui-window-property . S S 10..                 $ Scaling limit for the default x-axis
+set-gui-window-property . S L N                    $ No legend for the plots wirh the default x-axis
+
+set-plot-option . S N B T$C %s                     $ Plotting the temperature in Celsius
+set-plot-option . A Y 1 T Temperature [C]          $ y-axis title
+
+create-new-plot X .
+set-plot-option . S N B F$FCC_A1#01_P0 %s          $ Plotting the fraction of NbC precipitate phase
+set-plot-option . A Y 1 T NbC phase fraction       $ y-axis title
+
+create-new-plot X .
+set-plot-option . S N B R_MEAN$FCC_A1#01_P0 %s   $ Plotting the mean radius of NbC precipitate phase
+set-plot-option . A Y 1 T Mean radius [nm]       $ y-axis title
+set-plot-option . A Y 1 Y log                    $ Logarithmic scale on y-axis
+set-plot-option . A Y 1 S 0.1..                  $ Scaling range for y-axis
+set-plot-option . A Y 1 F 1e9                    $ Multiplication factor for y-axis
+
+create-new-plot X .
+$ Plotting the number of particles for NbC precipitate phase
+set-plot-option . S N B NUM_PREC$FCC_A1#01_P0 %s
+set-plot-option . A Y 1 T Number density [m<sup>-3</sup>]        $ y-axis title
+set-plot-option . A Y 1 Y log                                    $ Logarithmic scale on y-axis
+set-plot-option . A Y 1 S 1..                                    $ Scaling range for y-axis
+
+set-plot-option 1 G M X Y            $ Switching on the major gridlines for x-axis for plot no. 1
+set-plot-option 1 G M Y Y            $ Switching on the major gridlines for y-axis for plot no. 1
+set-plot-option 2 G M X Y            $ Switching on the major gridlines for x-axis for plot no. 2
+set-plot-option 2 G M Y Y            $ Switching on the major gridlines for y-axis for plot no. 2
+set-plot-option 3 G M X Y            $ Switching on the major gridlines for x-axis for plot no. 3
+set-plot-option 3 G M Y Y            $ Switching on the major gridlines for y-axis for plot no. 3
+set-plot-option 4 G M X Y            $ Switching on the major gridlines for x-axis for plot no. 4
+set-plot-option 4 G M Y Y            $ Switching on the major gridlines for y-axis for plot no. 4
+set-gui-window-property . N 2        $ Arranging plots in 2 columns
+
+
+$$************************************************************************************************** 
+                                DEFINITION OF THE HEAT TREATMENT
+**************************************************************************************************$$
+
+create-heat-treatment sample_ht          $ Creates the heat treatment sequence
+
+append-ht-segment sample_ht              $ Adding a segment to the heat treatment sequence
+$ In the current segment[.], [s]tart temperature is set 1400C
+edit-ht-segment sample_ht . S 1400
+$$ In the current segment[.], the parameter set no.[1] is chosen with end temperature
+ 600C and cooling rate 1K/s $$
+edit-ht-segment sample_ht . 1 600 -1
+$$ In the current segment[.], precipitation [d]omain is [n]ot inherited from the previous
+ segment. It is set to austenite $$
+edit-ht-segment sample_ht . D N austenite
+
+append-ht-segment sample_ht              $ Adding a segment to the heat treatment sequence
+$$ In the current segment[.], the parameter pair no.[1] is chosen with end temperature 25C
+ and cooling rate 1K/s $$
+edit-ht-segment sample_ht . 1 25 -1
+$$ In the current segment[.], precipitation [d]omain is [n]ot inherited from the
+ previous segment. It is set to ferrite $$
+edit-ht-segment sample_ht . D N ferrite
+
+append-ht-segment sample_ht              $ New segment
+edit-ht-segment sample_ht . 1 850 1      $ End temperature: 850C; Heating rate: 1K/s
+$ In the current segment[.], for precipitation [d]omain the inheritance option is  set to [y]es
+edit-ht-segment sample_ht . D Y
+
+append-ht-segment sample_ht                  $ New segment
+edit-ht-segment sample_ht . 1 1100 1         $ End temperature: 1100C; Heating rate: 1K/s
+edit-ht-segment sample_ht . D N austenite    $ Precipitation domain: Austenite
+
+append-ht-segment sample_ht                  $ New segment
+$$ In the current segment[.], the parameter set no.[3] is chosen with end temperature
+ 1100C and heating time 7200 seconds. $$
+edit-ht-segment sample_ht . 3 1100 7200
+$ In the current segment[.], for precipitation [d]omain the inheritance option is set to [y]es
+edit-ht-segment sample_ht . D Y
+
+append-ht-segment sample_ht                  $ New segment
+edit-ht-segment sample_ht . 1 600 -1         $ End temperature: 600C; Heating rate: -1K/s
+edit-ht-segment sample_ht . D Y              $ Precipitation domain: inherited from previous
+
+append-ht-segment sample_ht                  $ New segment
+edit-ht-segment sample_ht . 1 25 -1          $ End temperature: 25C; Heating rate: -1K/s
+edit-ht-segment sample_ht . D N ferrite      $ Precipitation domain: Ferrite
+
+$$ In the segment no.[0], a line is added[+] to the p[r]e-seg script 
+ (Grain boundaries as nucleation sites for NbC precipitate) $$
+edit-ht-segment sample_ht 0 R +set-precipitation-parameter FCC_A1#01_P0 N S G
+$$ In the segment no.[0], a line is added[+] to the p[o]st-seg script 
+ (Grain boundaries and dislocations as nucleation sites for NbC precipitate) $$
+edit-ht-segment sample_ht 0 O +set-precipitation-parameter FCC_A1#01_P0 N S DG
+
+save-workspace Tutorial_17_init
+
+
+$$************************************************************************************************** 
+                                        PERFORM SIMULATION
+**************************************************************************************************$$
+
+$ Temperature profile from defined [h]eat treatment "sample_ht" with the max. temperature step of 10
+set-simulation-parameter T H sample_ht 10
+start-precipitate-simulation 
+
+
+$$************************************************************************************************** 
+                        SIMULATION WITH SEPARATION OF PRECIPITATE POPULATIONS
+**************************************************************************************************$$
+
+create-new-phase FCC_A1#01 P                     $ Creates the second phase for NbC precipitate
+
+$$ In the segment no.[0], a line is added[+] to the p[r]e-seg script 
+ (none of the nucleation sites are selected for the second NbC precipitate) $$
+edit-ht-segment sample_ht 0 R +set-precipitation-parameter FCC_A1#01_P1 N S N
+$$ In the segment no.[0], a line is removed[-] from the p[o]st-seg script 
+ (Grain boundaries and dislocations as nucleation sites for the first NbC precipitate) $$
+edit-ht-segment sample_ht 0 O -set-precipitation-parameter FCC_A1#01_P0 N S DG
+$$ In the segment no.[0], a line is added[+] to the p[o]st-seg script 
+ (none of the nucleation sites are selected for the first NbC precipitate) $$
+edit-ht-segment sample_ht 0 O +set-precipitation-parameter FCC_A1#01_P0 N S N
+$$ Segment no.0, post-seg script, adding: Grain boundaries and dislocations as nucleation
+ sites for NbC precipitate $$
+edit-ht-segment sample_ht 0 O +set-precipitation-parameter FCC_A1#01_P1 N S DG
+
+start-precipitate-simulation 
+
+$ Plotting the fraction of the second NbC precipitate phase
+set-plot-option 2 S N B F$FCC_A1#01_P1 %s
+set-plot-option . A Y 1 Y log                        $ Logarithmic scale on y-axis
+set-plot-option . A Y 1 S 1e-10..                    $ Scaling on y-axis starts from 1e-10
+$ Plotting the mean radius of the second NbC precipitate phase
+set-plot-option 3 S N B R_MEAN$FCC_A1#01_P1 %s
+$ Plotting the number of particles for NbC precipitate phase
+set-plot-option 4 S N B NUM_PREC$FCC_A1#01_P1 %s
+
+
+$$************************************************************************************************** 
+          SIMULATION WITH PRECIPITATES WITH NUCLEATION RESTRICTED TO SELECTED DOMAIN
+**************************************************************************************************$$
+
+$$ For the [n]ucleation of the FCC_A1#01_P0 precipitate, the option of the nucleation
+ restricted to [p]recipitate domain restricted is switched to [y]es. The domain is selected
+ to austenite $$
+ 
+set-precipitation-parameter FCC_A1#01_P0 N P Y austenite 
+
+$$ For the [n]ucleation of the FCC_A1#01_P1 precipitate, the option of the nucleation
+ restricted to [p]recipitate domain restricted is switched to [y]es. The domain is selected
+ to ferrite $$
+
+set-precipitation-parameter FCC_A1#01_P1 N P Y ferrite
+
+set-precipitation-parameter FCC_A1#01_P0 N S G       $ Nucleation site for FCC_A1#01_P0: grain boundaries
+
+$ In the segment no.[0], the content of the p[r]e-seg script is cleared [-]
+edit-ht-segment sample_ht 0 R -
+
+$ In the segment no.[0], the content of the p[o]st-seg script is cleared [-]
+edit-ht-segment sample_ht 0 O -
+
+SET_GUI_WINDOW_PROPERTY . L                          $ Duplicate and lock all plot series
+
+start-precipitate-simulation 
+
+
+$$************************************************************************************************** 
+                                        SAVING WORKSPACE
+**************************************************************************************************$$
+
+save-workspace Tutorial_17
