@@ -1,0 +1,62 @@
+go data
+sw tcfe7
+d-sys fe c ti
+l-sys
+const
+rej phase /all
+rest phases bcc fcc
+get 
+go p-3
+l-st
+
+
+s-c t=1273.15,p=1e5,n=1,x(c)=0.002,x(ti)=0.002
+c-e
+l-e
+
+
+@?<Hit_return_to_continue>
+
+ch_st phase fcc_a1#1
+dormant
+
+ch_st phase fcc_a1#2
+dormant
+
+
+
+set-axis-var 1 t
+773.15
+1273.15
+10
+step
+normal
+
+
+
+post
+s-d-a x t
+s-d-a y np(bcc_a2#1)
+list_data_table np.txt
+
+
+@?<Hit_return_to_continue>
+
+ent tab y_list1
+t dgm(fcc_a1#1) dgm(fcc_a1#2) gm
+
+tabulate y_list1 dgm.txt
+
+
+
+ent tab y_list2
+t x(fcc_a1#1,ti) x(fcc_a1#2,ti)
+
+tabultate y_list2 fcc_x.txt
+
+
+
+
+@?<Hit_return_to_continue>
+
+set_inter

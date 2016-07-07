@@ -1,0 +1,72 @@
+go data
+sw tcfe7
+d-sys fe c ti
+l-sys
+const
+rej phase /all
+rest phases bcc fcc
+get 
+go p-3
+l-st
+
+
+s-c t=1273.15,p=1e5,n=1,x(c)=0.002,x(ti)=0.002
+c-e
+l-e
+
+
+@?<Hit_return_to_continue>
+
+s-a-v 1 t
+773.15
+1273.15
+15
+step
+normal
+
+
+@?<Hit_return_to_continue>
+
+post
+s-d-a x t-c
+s-d-a y x(bcc_a2,*)
+
+list_data_table bcc_x.txt
+
+
+@?<Hit_return_to_continue>
+
+
+
+s-d-a y np(*)
+
+list_data_table np.txt
+
+@?<Hit_return_to_continue>
+
+
+
+s-d-a y x(fcc_a1#2,*)
+
+list_data_table fcc_x.txt
+
+
+@?<Hit_return_to_continue>
+
+ent func
+rec_t = 1/t;
+
+ent func
+sol = log10(x(bcc_a2,ti)*x(bcc_a2,c));
+
+ent tab
+y_list
+t rec_t x(bcc_a2,ti) x(bcc_a2,c) sol
+
+tabulate y_list sol.txt
+
+
+@?<Hit_return_to_continue>
+
+set_inter
+
